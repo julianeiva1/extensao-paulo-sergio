@@ -211,6 +211,14 @@ extensao-paulo-sergio/
 
 ---
 
+## 🔗 Links da Entrega
+
+- **Repositório GitHub**: https://github.com/julianeiva1/extensao-paulo-sergio
+- **Documentação Online**: https://julianeiva1.github.io/extensao-paulo-sergio/
+- **Aplicação Publicada**: https://extensao-paulo-sergio.onrender.com
+
+---
+
 ## ✨ Desenvolvido com ❤️ utilizando Spec-Driven Development
 
 Para mais informações, consulte:

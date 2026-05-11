@@ -1,6 +1,17 @@
 # Atividade Acadêmica: Spec-Driven Development
 
-## 📚 Contexto
+## � Informações da Entrega
+
+**Aluna**: Julia Neiva
+
+**Links finais:**
+- **Repositório GitHub**: https://github.com/julianeiva1/extensao-paulo-sergio
+- **Documentação MkDocs**: https://julianeiva1.github.io/extensao-paulo-sergio/
+- **Aplicação Publicada**: https://extensao-paulo-sergio.onrender.com
+
+---
+
+## �📚 Contexto
 
 Esta atividade faz parte da disciplina de **Engenharia de Software** (Aula 09), que aborda a metodologia de **Spec-Driven Development (SDD)** como prática de qualidade no desenvolvimento de software.
 

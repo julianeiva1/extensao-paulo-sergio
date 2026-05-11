@@ -1,6 +1,17 @@
 # TODO List - Atividade Acadêmica de Spec-Driven Development
 
-## 📋 Visão Geral
+## � Informações da Entrega
+
+**Aluna**: Julia Neiva
+
+**Links finais:**
+- **Repositório GitHub**: https://github.com/julianeiva1/extensao-paulo-sergio
+- **Documentação MkDocs**: https://julianeiva1.github.io/extensao-paulo-sergio/
+- **Aplicação Publicada**: https://extensao-paulo-sergio.onrender.com
+
+---
+
+## �📋 Visão Geral
 
 Bem-vindo à documentação do projeto **TODO List**, uma aplicação MVC desenvolvida com **Spec-Driven Development** (SDD) conforme metodologia ensinada na disciplina de Engenharia de Software (Aula 09).
 

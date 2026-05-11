@@ -1,5 +1,9 @@
 # Entrega — TODO List com Spec-Driven Development
 
+## Aluna
+
+Julia Neiva
+
 ## Repositório GitHub
 
 https://github.com/julianeiva1/extensao-paulo-sergio
@@ -10,7 +14,7 @@ https://julianeiva1.github.io/extensao-paulo-sergio/
 
 ## Aplicação publicada
 
-[preencher após deploy]
+https://extensao-paulo-sergio.onrender.com
 
 ## Resumo
 
@@ -25,10 +29,20 @@ Aplicação TODO List desenvolvida com Spec-Driven Development, usando ASP.NET C
 - GitHub Spec-Kit
 - MkDocs
 - GitHub Pages
+- Render
+
+## Funcionalidades entregues
+
+- Cadastro de tarefas
+- Listagem de tarefas
+- Remoção de tarefas
+- Lembrete opcional por tarefa
+- Edição de tarefa
+- Marcar tarefa como concluída
 
 ## Observação
 
-A documentação online já foi publicada via GitHub Pages. O link da aplicação publicada será preenchido após o deploy em servidor gratuito.
+Por exigência do enunciado, a aplicação utiliza armazenamento em memória, sem banco de dados persistente. Portanto, as tarefas cadastradas podem ser perdidas quando o serviço reiniciar ou quando a instância gratuita do Render for desligada por inatividade.
 ```
 
 **Arquivos Removidos Corretamente**:
