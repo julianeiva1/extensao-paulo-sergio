@@ -68,6 +68,14 @@
                                             <small class="text-dark d-block">@tarefa.Descricao</small>
                                         </div>
                                     }
+                                    @if (tarefa.LembreteEm.HasValue)
+                                    {
+                                        <div class="ms-4 mt-2 p-2 bg-warning bg-opacity-10 rounded">
+                                            <small class="text-dark d-block">
+                                                <strong>🔔 Lembrete:</strong> @tarefa.LembreteEm.Value.ToString("dd/MM/yyyy HH:mm")
+                                            </small>
+                                        </div>
+                                    }
                                     <small class="text-muted d-block mt-1">
                                         Criada em: @tarefa.DataCriacao.ToString("dd/MM/yyyy HH:mm")
                                     </small>

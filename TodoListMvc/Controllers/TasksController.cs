@@ -44,13 +44,13 @@ namespace TodoListMvc.Controllers
         /// </summary>
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public IActionResult Create([Bind("Titulo,Descricao")] Tarefa tarefa)
+        public IActionResult Create([Bind("Titulo,Descricao,LembreteEm")] Tarefa tarefa)
         {
             try
             {
                 if (ModelState.IsValid)
                 {
-                    _repositorio.Criar(tarefa.Titulo, tarefa.Descricao);
+                    _repositorio.Criar(tarefa.Titulo, tarefa.Descricao, tarefa.LembreteEm);
                     _logger.LogInformation("Tarefa criada com sucesso");
                     return RedirectToAction(nameof(Index));
                 }
@@ -86,13 +86,13 @@ namespace TodoListMvc.Controllers
         /// </summary>
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public IActionResult Edit(Guid id, [Bind("Titulo")] Tarefa tarefa)
+        public IActionResult Edit(Guid id, [Bind("Titulo,Descricao,LembreteEm")] Tarefa tarefa)
         {
             try
             {
                 if (ModelState.IsValid)
                 {
-                    var sucesso = _repositorio.Atualizar(id, tarefa.Titulo);
+                    var sucesso = _repositorio.Atualizar(id, tarefa.Titulo, tarefa.Descricao, tarefa.LembreteEm);
                     if (sucesso)
                     {
                         _logger.LogInformation("Tarefa {Id} atualizada com sucesso", id);

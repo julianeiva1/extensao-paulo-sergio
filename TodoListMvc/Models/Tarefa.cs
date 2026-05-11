@@ -29,6 +29,12 @@ namespace TodoListMvc.Models
         public string? Descricao { get; set; }
 
         /// <summary>
+        /// Data e hora de um lembrete opcional para a tarefa.
+        /// Nullable porque é opcional.
+        /// </summary>
+        public DateTime? LembreteEm { get; set; }
+
+        /// <summary>
         /// Indica se a tarefa foi concluída.
         /// Default: false (não concluída).
         /// </summary>

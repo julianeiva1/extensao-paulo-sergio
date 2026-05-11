@@ -46,9 +46,10 @@ namespace TodoListMvc.Services
         /// </summary>
         /// <param name="titulo">Título da tarefa</param>
         /// <param name="descricao">Descrição opcional da tarefa</param>
+        /// <param name="lembreteEm">Data/hora opcional do lembrete</param>
         /// <returns>Tarefa criada</returns>
         /// <exception cref="ArgumentException">Se título inválido</exception>
-        public Tarefa Criar(string titulo, string? descricao = null)
+        public Tarefa Criar(string titulo, string? descricao = null, DateTime? lembreteEm = null)
         {
             ValidarTitulo(titulo);
 
@@ -57,6 +58,7 @@ namespace TodoListMvc.Services
                 Id = Guid.NewGuid(),
                 Titulo = titulo.Trim(),
                 Descricao = string.IsNullOrWhiteSpace(descricao) ? null : descricao.Trim(),
+                LembreteEm = lembreteEm,
                 Concluida = false,
                 DataCriacao = DateTime.UtcNow,
                 DataModificacao = DateTime.UtcNow,
@@ -72,13 +74,15 @@ namespace TodoListMvc.Services
         }
 
         /// <summary>
-        /// Atualiza o título de uma tarefa existente.
+        /// Atualiza os dados de uma tarefa existente.
         /// </summary>
         /// <param name="id">ID da tarefa</param>
         /// <param name="novoTitulo">Novo título</param>
+        /// <param name="novaDescricao">Nova descrição (opcional)</param>
+        /// <param name="novoLembreteEm">Novo lembrete (opcional)</param>
         /// <returns>true se atualizada, false se não encontrada</returns>
         /// <exception cref="ArgumentException">Se título inválido</exception>
-        public bool Atualizar(Guid id, string novoTitulo)
+        public bool Atualizar(Guid id, string novoTitulo, string? novaDescricao = null, DateTime? novoLembreteEm = null)
         {
             ValidarTitulo(novoTitulo);
 
@@ -89,6 +93,8 @@ namespace TodoListMvc.Services
                     return false;
 
                 tarefa.Titulo = novoTitulo.Trim();
+                tarefa.Descricao = string.IsNullOrWhiteSpace(novaDescricao) ? null : novaDescricao.Trim();
+                tarefa.LembreteEm = novoLembreteEm;
                 tarefa.DataModificacao = DateTime.UtcNow;
                 return true;
             }

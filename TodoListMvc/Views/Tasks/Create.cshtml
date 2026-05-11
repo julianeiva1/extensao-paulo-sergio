@@ -67,6 +67,18 @@
                     </small>
                 </div>
 
+                <div class="mb-3">
+                    <label for="lembreteEm" class="form-label">Lembrete (Opcional)</label>
+                    <input asp-for="LembreteEm" 
+                           type="datetime-local" 
+                           class="form-control" 
+                           id="lembreteEm"
+                           placeholder="Selecione data e hora do lembrete" />
+                    <small class="form-text text-muted d-block mt-1">
+                        Data e hora para seu lembrete
+                    </small>
+                </div>
+
                 <div class="d-grid gap-2 d-md-flex justify-content-md-end">
                     <a href="@Url.Action("Index")" class="btn btn-secondary btn-lg">Cancelar</a>
                     <button type="submit" class="btn btn-success btn-lg">Criar Tarefa</button>

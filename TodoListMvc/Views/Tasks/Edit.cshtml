@@ -27,6 +27,8 @@
             }
 
             <form method="post" action="@Url.Action("Edit", new { id = Model.Id })">
+                @Html.AntiForgeryToken()
+                
                 <div class="mb-3">
                     <label for="titulo" class="form-label">Título da Tarefa</label>
                     <input type="text" 
@@ -50,6 +52,31 @@
                             }
                         </div>
                     }
+                </div>
+
+                <div class="mb-3">
+                    <label for="descricao" class="form-label">Descrição (Opcional)</label>
+                    <textarea class="form-control" 
+                              id="descricao" 
+                              name="Descricao" 
+                              placeholder="Digite uma descrição detalhada para sua tarefa..."
+                              rows="3"
+                              maxlength="2000">@Model?.Descricao</textarea>
+                    <small class="form-text text-muted d-block mt-1">
+                        Máximo de 2000 caracteres
+                    </small>
+                </div>
+
+                <div class="mb-3">
+                    <label for="lembreteEm" class="form-label">Lembrete (Opcional)</label>
+                    <input asp-for="LembreteEm" 
+                           type="datetime-local" 
+                           class="form-control" 
+                           id="lembreteEm"
+                           placeholder="Selecione data e hora do lembrete" />
+                    <small class="form-text text-muted d-block mt-1">
+                        Data e hora para seu lembrete
+                    </small>
                 </div>
 
                 <div class="mb-3 p-3 bg-light rounded">
