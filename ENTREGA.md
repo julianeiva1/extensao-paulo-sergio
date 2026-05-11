@@ -1,203 +1,34 @@
-# 🎯 Entrega — TODO List com Spec-Driven Development
+# Entrega — TODO List com Spec-Driven Development
 
-## Informações da Entrega
+## Repositório GitHub
 
-**Disciplina**: Engenharia de Software - Aula 09  
-**Atividade**: TODO List com Spec-Driven Development  
-**Data**: 10 de maio de 2026  
-**Status**: ✅ **PRONTO PARA ENTREGA**
-
----
-
-## 🔗 Links Obrigatórios
-
-### 1. Repositório GitHub
-```
 https://github.com/julianeiva1/extensao-paulo-sergio
-```
 
-**Branches**:
-- `main` - Versão final (pronta para entrega)
+## Documentação online MkDocs
 
-**Conteúdo**:
-- ✅ Aplicação MVC (TodoListMvc/)
-- ✅ Artefatos Spec-Kit (specs/)
-- ✅ Documentação MkDocs (docs/)
-- ✅ Constitution com justificativas
+https://julianeiva1.github.io/extensao-paulo-sergio/
 
-### 2. Documentação Online MkDocs
-```
-[Preencher após publicar em GitHub Pages ou similar]
-Exemplo: https://julianeiva1.github.io/extensao-paulo-sergio/
-```
+## Aplicação publicada
 
-**Como publicar**:
-1. GitHub Pages automático (Settings → Pages)
-2. Ou: `mkdocs gh-deploy --force`
+[preencher após deploy]
 
-### 3. Aplicação Publicada em Servidor Gratuito
-```
-[Preencher após deploy]
-Opções:
-- Railway.app (recomendado para .NET)
-- Heroku (com Procfile)
-- Replit (desenvolvimento)
-- Azure App Service (free tier)
-```
+## Resumo
 
----
+Aplicação TODO List desenvolvida com Spec-Driven Development, usando ASP.NET Core MVC, arquitetura mono-repo e armazenamento em memória. A aplicação permite cadastrar tarefas, remover tarefas e associar lembretes opcionais.
 
-## 📋 Resumo da Atividade
+## Tecnologias utilizadas
 
-### O Que Foi Desenvolvido
+- ASP.NET Core MVC
+- Razor Views
+- C#
+- Armazenamento em memória
+- GitHub Spec-Kit
+- MkDocs
+- GitHub Pages
 
-Aplicação **TODO List** em **ASP.NET Core 8 MVC** que permite:
+## Observação
 
-1. ✅ **Listar Tarefas**: Visualizar todas as tarefas com detalhes
-2. ✅ **Cadastrar Tarefa**: Criar novo item com título, descrição e lembrete
-3. ✅ **Remover Tarefa**: Deletar tarefa com confirmação
-4. ✅ **Editar Tarefa**: Modificar título, descrição e lembrete
-5. ✅ **Marcar Concluída**: Toggle para marcar/desmarcar conclusão
-6. ✅ **Lembrete Opcional**: Data/hora para lembretes formatados
-
-### Arquitetura
-
-**Escolha Principal**: MVC Monolítico
-- 1 projeto ASP.NET Core 8
-- Armazenamento em memória (List<Tarefa>)
-- Sem banco de dados persistente
-- Sem Entity Framework
-- Sem SQLite
-- Sem frontend React separado
-
-### Metodologia
-
-**Spec-Driven Development (SDD)** em 6 fases:
-1. Especificação → 3 User Stories
-2. Planejamento → Decisões arquiteturais
-3. Tarefas → 42 itens implementados
-4. Implementação → Código em C# + Razor
-5. Validação → Testes manuais
-6. Documentação → MkDocs + Constitution
-
----
-
-## ✅ Checklist de Requisitos Atendidos
-
-### Funcionalidades Obrigatórias
-
-- [x] **Cadastrar tarefas** - Create.cshtml + TasksController POST
-- [x] **Remover tarefas** - Delete.cshtml + TasksController DELETE
-- [x] **Ter lembretes** - DateTime? LembreteEm + exibição na Index.cshtml
-- [x] **Validações** - Título obrigatório, máximos de caracteres
-- [x] **Editar tarefas** - Edit.cshtml + TasksController PUT
-- [x] **Marcar concluído** - Checkbox + ToggleComplete action
-
-### Arquitetura & Padrões
-
-- [x] **Arquitetura MVC** - Controllers, Models, Views
-- [x] **Mono-repo** - Tudo em uma pasta raiz
-- [x] **Armazenamento em memória** - List<Tarefa> Singleton
-- [x] **Sem banco persistente** - Nenhum .db, .sqlite, etc
-- [x] **Sem Entity Framework** - Sem DbContext, migrations
-- [x] **Sem SQLite** - Sem nuget SQLite
-- [x] **Sem React** - Apenas Razor + Bootstrap CDN
-
-### Documentação & Governança
-
-- [x] **Constitution** - `.specify/memory/constitution.md` com justificativas
-- [x] **Especificação Spec-Kit** - `specs/001-todo-list/spec.md`
-- [x] **Plano Spec-Kit** - `specs/001-todo-list/plan.md`
-- [x] **Tasks Spec-Kit** - `specs/001-todo-list/tasks.md` (42 itens)
-- [x] **Documentação MkDocs** - 7+ páginas em `docs/`
-- [x] **README.md** - Quick start + estrutura
-- [x] **ENTREGA.md** - Este arquivo
-
-### Versionamento & Entrega
-
-- [x] **Código no GitHub** - repositório público
-- [x] **Arquivo ENTREGA.md** - Links e instruções
-- [ ] **Aplicação online** - *(em andamento ou futuro)*
-- [ ] **Documentação online** - *(em andamento ou futuro)*
-
----
-
-## 🔬 Verificações Técnicas Realizadas
-
-### Build da Aplicação
-```bash
-cd TodoListMvc
-dotnet build
-# ✅ Build succeeded. 0 Error(s)
-```
-
-### Execução Local
-```bash
-dotnet run
-# ✅ Now listening on: http://localhost:5125
-```
-
-### Compilação MkDocs
-```bash
-mkdocs build
-# ✅ site/ gerado com sucesso
-```
-
-### Funcionalidades Testadas (Manuais)
-- [x] Listar tarefas (vazio inicial)
-- [x] Criar tarefa com título
-- [x] Criar tarefa com descrição
-- [x] Criar tarefa com lembrete
-- [x] Visualizar lembrete na listagem
-- [x] Editar tarefa (alterar lembrete)
-- [x] Marcar como concluída (checkbox)
-- [x] Remover tarefa (com confirmação)
-
----
-
-## 📁 Estrutura Final do Repositório
-
-```
-extensao-paulo-sergio/
-├── .specify/
-│   └── memory/
-│       └── constitution.md ........................ ✅ Justificativas
-├── docs/
-│   ├── index.md ................................. ✅ Home
-│   ├── aula-09-sdd.md ........................... ✅ Contexto
-│   ├── arquitetura.md ........................... ✅ MVC explicado
-│   ├── uso.md ................................... ✅ Como usar
-│   ├── spec-driven-development.md ............... ✅ Metodologia SDD
-│   ├── deploy.md ................................ ✅ Deploy
-│   ├── spec.md .................................. ✅ Cópia da spec
-│   ├── plan.md .................................. ✅ Cópia do plan
-│   ├── tasks.md ................................. ✅ Cópia das tasks
-│   └── constitution.md .......................... ✅ Cópia da const.
-├── specs/001-todo-list/
-│   ├── spec.md .................................. ✅ User stories
-│   ├── plan.md .................................. ✅ Arquitetura
-│   ├── tasks.md ................................. ✅ 42 tarefas
-│   ├── data-model.md ............................ ✅ Modelo
-│   ├── research.md .............................. ✅ Pesquisa
-│   ├── quickstart.md ............................ ✅ Quick guide
-│   ├── contracts/
-│   │   └── task-api.md .......................... ✅ Contratos
-│   └── checklists/
-│       └── requirements.md ...................... ✅ Validação
-├── TodoListMvc/                              ✅ Aplicação MVC
-│   ├── Controllers/TasksController.cs .......... ✅ 9 ações
-│   ├── Models/Tarefa.cs ........................ ✅ Entity
-│   ├── Services/RepositorioTarefas.cs ......... ✅ Singleton
-│   ├── Views/Tasks/
-│   │   ├── Index.cshtml ........................ ✅ Listagem
-│   │   ├── Create.cshtml ....................... ✅ Novo
-│   │   └── Edit.cshtml ......................... ✅ Edição
-│   ├── Program.cs .............................. ✅ Config
-│   ├── appsettings.json ........................ ✅ Settings
-│   └── TodoListMvc.csproj ...................... ✅ Project
-├── mkdocs.yml .................................... ✅ Config MkDocs
-├── ENTREGA.md .................................... ✅ Este arquivo
-└── README.md ..................................... ✅ Quick start
+A documentação online já foi publicada via GitHub Pages. O link da aplicação publicada será preenchido após o deploy em servidor gratuito.
 ```
 
 **Arquivos Removidos Corretamente**:
