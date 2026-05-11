@@ -360,7 +360,7 @@ Acessar em Railway:
 
 ## Links Finais
 
-Após deployment bem-sucedido, atualizar [ENTREGA.md](../ENTREGA.md) com:
+Após deployment bem-sucedido, atualizar o arquivo `ENTREGA.md` no repositório com:
 - Link GitHub: `https://github.com/seu-usuario/seu-repositorio`
 - Link Aplicação: `https://[seu-app]-production.railway.app`
 - Link Documentação: `https://seu-usuario.github.io/seu-repositorio`

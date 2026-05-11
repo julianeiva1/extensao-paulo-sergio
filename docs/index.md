@@ -194,7 +194,7 @@ Este projeto foi desenvolvido seguindo a metodologia de **Spec-Driven Developmen
 
 ## 🔗 Links da Entrega
 
-Veja [ENTREGA.md](../ENTREGA.md) para links de:
+Consulte o arquivo `ENTREGA.md` no repositório para links de:
 - Repositório GitHub
 - Aplicação publicada
 - Documentação online
@@ -204,8 +204,8 @@ Veja [ENTREGA.md](../ENTREGA.md) para links de:
 Para dúvidas sobre o projeto, consulte:
 - [Especificação](spec.md)
 - [Plano](plan.md)
-- [Constitution]( constitution.md)
-- Código comentado em [TodoListMvc/](../TodoListMvc)
+- [Constitution](constitution.md)
+- Código em `TodoListMvc/` no repositório GitHub
 
 ---
 
