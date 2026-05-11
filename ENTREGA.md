@@ -242,7 +242,6 @@ mkdocs gh-deploy --force
 
 ## 📞 Resumo para o Professor
 
-**Aluno**: [Seu Nome]  
 **Repositório**: https://github.com/julianeiva1/extensao-paulo-sergio  
 **Status**: ✅ Pronto para avaliação
 
