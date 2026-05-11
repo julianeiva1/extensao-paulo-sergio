@@ -27,6 +27,8 @@
             }
 
             <form method="post" action="@Url.Action("Create")">
+                @Html.AntiForgeryToken()
+                
                 <div class="mb-3">
                     <label for="titulo" class="form-label">Título da Tarefa</label>
                     <input type="text" 
