@@ -51,6 +51,101 @@ O projeto DEVE priorizar soluções simples, mantíveis e viáveis dentro do pra
 
 **Expectativa**: Evitar over-engineering, escolher ferramentas conhecidas pelo grupo, documentação concisa, reavaliação contínua do que realmente agrega valor.
 
+## Arquitetura Decisão: MVC Mono-Repo com Armazenamento em Memória
+
+### Decisão
+Arquitetura: **ASP.NET Core MVC** em **mono-repo** com **armazenamento em memória** (sem banco de dados persistente).
+
+### Justificativa (WCAG - Why, Context, Alternatives Considered, Good choice)
+
+**Why (Por quê)**:
+- Enunciado exige: "A aplicação não requer persistência de dados entre execuções"
+- Contexto acadêmico: simplicidade é mais importante que escalabilidade
+- Requisitos cobrem apenas: cadastrar tarefas, remover tarefas, adicionar lembretes
+- Atividade de ensino em Spec-Driven Development deve focar no processo, não em complexidade técnica
+
+**Context (Contexto)**:
+- Implementação anterior tentava separação backend (ASP.NET Core Web API) + frontend (React)
+- Resultado: over-engineering, complexidade desnecessária, dificuldade de deployment
+- Feedback do enunciado: projeto deve atender requisitos específicos sem adicionar funcionalidades
+- Mono-repo permite manter código, especificações e documentação juntos
+
+**Alternatives Considered (Alternativas)**:
+1. ❌ Backend/Frontend separado (API + React): Over-engineering, custo operacional, complexidade
+2. ❌ Banco de dados persistente (SQLite/SQL): Não atende requisito "sem persistência"
+3. ❌ Frontend framework (Vue/Angular): Desnecessário para requisitos simples
+4. ✅ **MVC Mono-Repo em Memória**: Atende todos os requisitos com máxima simplicidade
+
+**Good Choice (Boa Escolha)**:
+- Atende 100% dos requisitos do enunciado
+- Minimiza complexidade: 1 projeto, 1 linguagem, deploy simples
+- Mantém aderência à constitution (Pragmatism & Simplicity)
+- Facilita o entendimento e manutenção do código
+
+### Decisões Técnicas Secundárias
+
+#### 1. MVC (não WebForms, nem Pages)
+- MVC é a arquitetura padrão educacional para .NET
+- Controllers e Views seguem padrão bem conhecido
+- Razor templates simplificam bindings sem exigir JavaScript
+- Models naturais para validação server-side
+
+#### 2. Armazenamento em Memória (não Entity Framework)
+- Requisito: "sem banco de dados persistente"
+- Repositório simples com `List<Tarefa>` em uma classe Singleton
+- Validações centralizadas no repositório
+- Dados perdidos ao reiniciar (conforme enunciado)
+- Permite migração futura para banco se necessário
+
+#### 3. Mono-Repo (não multi-repo)
+- Repositório único no GitHub com: `/specs`, `/TodoListMvc`, `/docs`
+- Simplifica CI/CD e deployment
+- Mantém artefatos SDD, código e documentação sincronizados
+- Adequado para projeto acadêmico de tamanho pequeno/médio
+
+#### 4. Bootstrap 5 via CDN (não npm/build)
+- Sem dependência de Node.js ou build tools adicionais
+- Responsivo por padrão (mobile-first)
+- Reduz complexidade do projeto .NET
+- CSS rápido e testado em produção
+
+#### 5. MkDocs para Documentação
+- Geração estática (sem banco de dados)
+- Publicável em GitHub Pages gratuitamente
+- Markdown versionável no repositório
+- Foco em documentação de processo SDD, não code generation
+
+#### 6. Deployment em Servidor Gratuito (Railway/Heroku/Azure Free)
+- Requisito do enunciado: "publicável em servidor gratuito"
+- ASP.NET Core roda em Linux containers
+- Não requer recursos especiais (sem banco persistente)
+- Deploy direto do GitHub simplifica processo
+
+### Alinhamento com Constitution
+
+| Princípio | Como Aplicado |
+|-----------|---------------|
+| **Pragmatism** | Escolhemos a solução mais simples que atende ao enunciado |
+| **Code Clarity** | Nomes em português, Controllers e Services com responsabilidades claras |
+| **Code Review** | Todos os commits passam por validação (compilação e testes) |
+| **Testing** | Testes manuais de todos os user stories antes de release |
+| **UX Focus** | Interface simples em português, validações claras em tempo real |
+| **Simplicity** | 1 projeto, 1 linguagem, sem frameworks desnecessários |
+- Publicável em servidores gratuitos (Heroku, Railway, Azure Free)
+- Teste e debug facilitados por tudo estar centralizado
+- Preparado para evolução: Repositório Pattern permite trocar storage depois
+
+### Stack Técnico - Justificado
+
+| Componente | Escolha | Por Quê |
+|---|---|---|
+| Framework | ASP.NET Core MVC | MVC built-in, .NET é conhecido pelo grupo, segurança e performance |
+| Views | Razor Templates | Tudo em C#, sem frontend framework desnecessário |
+| Storage | In-Memory List | Requisito: dados não persistem, mais rápido, sem migrations SQL |
+| ORM | ❌ Nenhum | Não precisa com in-memory storage, simplifica código |
+| Database | ❌ Nenhum | Requisito: sem persistência entre execuções |
+| Deployment | Free Tier Servers | Heroku, Railway, Azure Free (ASP.NET Core é leve) |
+
 ## Quality Standards
 
 ### Code Quality

@@ -1,13 +1,117 @@
-# Feature Specification: Gerenciamento de Tarefas em TODO List
+# Especificação: TODO List MVC
 
-**Feature Branch**: `001-featurename-todo-list`  
-**Created**: 2026-05-10  
-**Status**: Draft  
-**Input**: Feature description - Criar, visualizar, editar, concluir e remover tarefas em uma TODO List simples
+**Status**: Refatoração do projeto para arquitetura MVC em mono-repo  
+**Data**: 2026-05-10  
+**Versão**: 1.0  
+**Escopo**: Atender requisitos exatos do enunciado (cadastrar, remover, adicionar lembretes)
 
-## User Scenarios & Testing *(mandatory)*
+## Resumo Executivo
 
-### User Story 1 - Visualizar Lista de Tarefas (Priority: P1)
+Aplicação TODO List simples em ASP.NET Core MVC que permite usuários:
+1. **Cadastrar tarefas** com título
+2. **Remover tarefas** da lista
+3. **Adicionar lembretes** às tarefas
+
+Requisitos não-funcionais:
+- Armazenamento em memória apenas (sem banco de dados)
+- Dados perdidos ao reiniciar aplicação
+- Publicável em servidor gratuito
+- Arquitetura MVC pura
+
+## User Stories
+
+### US1: Cadastrar Nova Tarefa (Priority: P1 - MVP)
+
+**Como** usuário  
+**Quero** criar novas tarefas digitando um título  
+**Para** organizar minhas atividades
+
+**Critérios de Aceitação**:
+1. Campo de entrada de texto para título
+2. Botão "Adicionar" ou Enter para confirmar
+3. Validação obrigatória: título não pode ser vazio
+4. Validação obrigatória: título não pode ter apenas espaços
+5. Nova tarefa aparece imediatamente na lista
+6. Campo de entrada é limpo após sucesso
+7. Mensagem de erro clara em português se falhar
+8. Título aceita até 500 caracteres
+
+---
+
+### US2: Remover Tarefa (Priority: P1 - MVP)
+
+**Como** usuário  
+**Quero** deletar tarefas que não faz mais sentido  
+**Para** manter minha lista organizada
+
+**Critérios de Aceitação**:
+1. Cada tarefa tem botão "Remover" ou ícone de lixeira
+2. Clique em remover deleta tarefa imediatamente
+3. Tarefa desaparece da tela
+4. Sem diálogo de confirmação (UX simples)
+5. Impossível recuperar tarefa deletada
+6. Lista é atualizada automaticamente
+
+---
+
+### US3: Adicionar Lembrete à Tarefa (Priority: P2)
+
+**Como** usuário  
+**Quero** adicionar notas/lembretes às tarefas  
+**Para** guardar detalhes importantes
+
+**Critérios de Aceitação**:
+1. Cada tarefa tem campo para adicionar lembrete
+2. Campo expande ao clicar "Adicionar lembrete"
+3. Lembrete é texto livre (sem limite rígido)
+4. Múltiplos lembretes por tarefa são permitidos
+5. Lembrete aparece associado visualmente à tarefa
+6. Possibilidade de editar lembrete existente
+7. Possibilidade de remover lembrete
+8. Lembrete é opcional (não bloqueia criação de tarefa)
+
+## Modelo de Dados
+
+```csharp
+public class Tarefa
+{
+    public Guid Id { get; set; }
+    public string Titulo { get; set; }           // obrigatório, max 500 chars
+    public bool Concluida { get; set; }          // default: false
+    public DateTime DataCriacao { get; set; }    // UTC
+    public List<Lembrete> Lembretes { get; set; } = new();
+}
+
+public class Lembrete
+{
+    public Guid Id { get; set; }
+    public string Texto { get; set; }            // texto livre
+    public DateTime DataCriacao { get; set; }    // UTC
+}
+```
+
+## Requisitos Não-Funcionais
+
+| Requisito | Descrição |
+|-----------|-----------|
+| **Armazenamento** | Em-memória (List<Tarefa>) |
+| **Persistência** | Nenhuma (dados perdidos ao reiniciar) |
+| **Banco de Dados** | Não usar EF, SQLite, SQL |
+| **Deployment** | Publicável em servidores gratuitos |
+| **Performance** | <200ms para operações |
+| **UX** | Responsivo, português brasileiro |
+| **Browser** | Chrome, Firefox, Safari (2 versões recentes) |
+
+## Fora do Escopo (MVP)
+
+- ❌ Autenticação/usuários
+- ❌ Persistência entre sessões
+- ❌ Categorias/tags
+- ❌ Prioridades
+- ❌ Datas de vencimento
+- ❌ Notificações
+- ❌ Compartilhamento
+- ❌ Múltiplos dispositivos
 
 O usuário acessa a aplicação e vê a lista de todas as suas tarefas cadastradas. O sistema exibe claramente qual tarefa foi concluída e qual ainda precisa ser feita, permitindo ao usuário ter uma visão geral do que já fez e o que ainda falta.
 

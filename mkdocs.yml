@@ -1,0 +1,52 @@
+site_name: TODO List - Atividade de Spec-Driven Development
+site_description: Aplicação TODO List em ASP.NET Core MVC com armazenamento em memória, desenvolvida com Spec-Driven Development
+site_author: Alunos IFES
+site_url: https://github.com/seu-usuario/seu-repositorio
+
+repo_name: Repository
+repo_url: https://github.com/seu-usuario/seu-repositorio
+
+theme:
+  name: material
+  palette:
+    - scheme: default
+      primary: blue
+      accent: blue
+  language: pt-BR
+  logo: assets/logo.png
+  icon:
+    repo: fontawesome/brands/github
+
+markdown_extensions:
+  - pymdownx.highlight
+  - pymdownx.superfences
+  - pymdownx.tabbed
+  - pymdownx.arithmatex
+  - pymdownx.details
+  - pymdownx.emoji
+  - pymdownx.magiclink
+  - pymdownx.mark
+  - pymdownx.superfences
+  - pymdownx.tabbed
+  - pymdownx.tasklist
+  - pymdownx.tilde
+  - tables
+  - toc:
+      permalink: true
+
+plugins:
+  - search
+
+nav:
+  - Início: index.md
+  - Atividade SDD (Aula 09): aula-09-sdd.md
+  - Especificação: spec.md
+  - Plano: plan.md
+  - Tasks: tasks.md
+  - Constitution: constitution.md
+  - Deploy: deploy.md
+
+extra:
+  social:
+    - icon: fontawesome/brands/github
+      link: https://github.com/seu-usuario/seu-repositorio

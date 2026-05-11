@@ -1,0 +1,105 @@
+@model Tarefa
+
+@{
+    ViewData["Title"] = "Editar Tarefa";
+}
+
+<div class="container mt-4">
+    <div class="row">
+        <div class="col-md-8 offset-md-2">
+            <h1 class="mb-4">Editar Tarefa</h1>
+
+            @if (!ViewData.ModelState.IsValid)
+            {
+                <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                    <h5 class="alert-heading">Erro ao editar tarefa</h5>
+                    <ul class="mb-0">
+                        @foreach (var modelState in ViewData.ModelState.Values)
+                        {
+                            @foreach (var error in modelState.Errors)
+                            {
+                                <li>@error.ErrorMessage</li>
+                            }
+                        }
+                    </ul>
+                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                </div>
+            }
+
+            <form method="post" action="@Url.Action("Edit", new { id = Model.Id })">
+                <div class="mb-3">
+                    <label for="titulo" class="form-label">Título da Tarefa</label>
+                    <input type="text" 
+                           class="form-control @(ViewData.ModelState.ContainsKey("Titulo") && !ViewData.ModelState["Titulo"].ValidationState.ToString().Contains("Valid") ? "is-invalid" : "")" 
+                           id="titulo" 
+                           name="Titulo" 
+                           placeholder="Digite o novo título da tarefa..."
+                           maxlength="500"
+                           value="@Model?.Titulo"
+                           required 
+                           autofocus />
+                    <small class="form-text text-muted d-block mt-1">
+                        Máximo de 500 caracteres
+                    </small>
+                    @if (ViewData.ModelState.ContainsKey("Titulo"))
+                    {
+                        <div class="invalid-feedback d-block">
+                            @foreach (var error in ViewData.ModelState["Titulo"].Errors)
+                            {
+                                @error.ErrorMessage
+                            }
+                        </div>
+                    }
+                </div>
+
+                <div class="mb-3 p-3 bg-light rounded">
+                    <small class="text-muted">
+                        <strong>Criada em:</strong> @Model.DataCriacao.ToString("dd/MM/yyyy HH:mm")
+                    </small>
+                </div>
+
+                <div class="d-grid gap-2 d-md-flex justify-content-md-end">
+                    <a href="@Url.Action("Index")" class="btn btn-secondary btn-lg">Cancelar</a>
+                    <button type="submit" class="btn btn-primary btn-lg">Atualizar Tarefa</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<style>
+    .form-control {
+        font-size: 1.1rem;
+        padding: 0.75rem;
+    }
+
+    .form-label {
+        font-weight: 600;
+        font-size: 1.05rem;
+    }
+
+    .btn-lg {
+        font-size: 1rem;
+        padding: 0.75rem 2rem;
+    }
+
+    @@media (max-width: 768px) {
+        .d-md-flex {
+            display: flex !important;
+            flex-direction: column-reverse !important;
+        }
+
+        .col-md-8 {
+            width: 100%;
+        }
+
+        .offset-md-2 {
+            margin-left: 0;
+        }
+
+        .btn-lg {
+            width: 100%;
+            margin-bottom: 0.5rem;
+        }
+    }
+</style>

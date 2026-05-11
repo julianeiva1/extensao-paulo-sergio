@@ -1,0 +1,1328 @@
+
+<!doctype html>
+<html lang="pt" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+        <meta name="description" content="Aplicação TODO List em ASP.NET Core MVC com armazenamento em memória, desenvolvida com Spec-Driven Development">
+      
+      
+        <meta name="author" content="Alunos IFES">
+      
+      
+        <link rel="canonical" href="https://github.com/seu-usuario/seu-repositorio/">
+      
+      
+      
+        <link rel="next" href="aula-09-sdd/">
+      
+      
+        
+      
+      
+      <link rel="icon" href="assets/images/favicon.png">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.7.6">
+    
+    
+      
+        <title>TODO List - Atividade de Spec-Driven Development</title>
+      
+    
+    
+      <link rel="stylesheet" href="assets/stylesheets/main.484c7ddc.min.css">
+      
+        
+        <link rel="stylesheet" href="assets/stylesheets/palette.ab4e12ef.min.css">
+      
+      
+
+
+    
+    
+      
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
+      
+    
+    
+    <script>__md_scope=new URL(".",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+  </head>
+  
+  
+    
+    
+      
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="blue" data-md-color-accent="blue">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#todo-list-atividade-academica-de-spec-driven-development" class="md-skip">
+          Pular para conteúdo
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+  
+
+<header class="md-header md-header--shadow" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Cabeçalho">
+    <a href="." title="TODO List - Atividade de Spec-Driven Development" class="md-header__button md-logo" aria-label="TODO List - Atividade de Spec-Driven Development" data-md-component="logo">
+      
+  <img src="assets/logo.png" alt="logo">
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            TODO List - Atividade de Spec-Driven Development
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              Início
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+      
+        <form class="md-header__option" data-md-component="palette">
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="" data-md-color-scheme="default" data-md-color-primary="blue" data-md-color-accent="blue"  aria-hidden="true"  type="radio" name="__palette" id="__palette_0">
+    
+  
+</form>
+      
+    
+    
+      <script>var palette=__md_get("__palette");if(palette&&palette.color){if("(prefers-color-scheme)"===palette.color.media){var media=matchMedia("(prefers-color-scheme: light)"),input=document.querySelector(media.matches?"[data-md-color-media='(prefers-color-scheme: light)']":"[data-md-color-media='(prefers-color-scheme: dark)']");palette.color.media=input.getAttribute("data-md-color-media"),palette.color.scheme=input.getAttribute("data-md-color-scheme"),palette.color.primary=input.getAttribute("data-md-color-primary"),palette.color.accent=input.getAttribute("data-md-color-accent")}for(var[key,value]of Object.entries(palette.color))document.body.setAttribute("data-md-color-"+key,value)}</script>
+    
+    
+    
+      
+      
+        <label class="md-header__button md-icon" for="__search">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        </label>
+        <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Buscar" placeholder="Buscar" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="Pesquisar">
+        
+        <button type="reset" class="md-search__icon md-icon" title="Limpar" aria-label="Limpar" tabindex="-1">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+        </button>
+      </nav>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" tabindex="0" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Inicializando busca
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+      
+    
+    
+      <div class="md-header__source">
+        <a href="https://github.com/seu-usuario/seu-repositorio" title="Ir para repositório" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path d="M173.9 397.4c0 2-2.3 3.6-5.2 3.6-3.3.3-5.6-1.3-5.6-3.6 0-2 2.3-3.6 5.2-3.6 3-.3 5.6 1.3 5.6 3.6m-31.1-4.5c-.7 2 1.3 4.3 4.3 4.9 2.6 1 5.6 0 6.2-2s-1.3-4.3-4.3-5.2c-2.6-.7-5.5.3-6.2 2.3m44.2-1.7c-2.9.7-4.9 2.6-4.6 4.9.3 2 2.9 3.3 5.9 2.6 2.9-.7 4.9-2.6 4.6-4.6-.3-1.9-3-3.2-5.9-2.9M252.8 8C114.1 8 8 113.3 8 252c0 110.9 69.8 205.8 169.5 239.2 12.8 2.3 17.3-5.6 17.3-12.1 0-6.2-.3-40.4-.3-61.4 0 0-70 15-84.7-29.8 0 0-11.4-29.1-27.8-36.6 0 0-22.9-15.7 1.6-15.4 0 0 24.9 2 38.6 25.8 21.9 38.6 58.6 27.5 72.9 20.9 2.3-16 8.8-27.1 16-33.7-55.9-6.2-112.3-14.3-112.3-110.5 0-27.5 7.6-41.3 23.6-58.9-2.6-6.5-11.1-33.3 2.6-67.9 20.9-6.5 69 27 69 27 20-5.6 41.5-8.5 62.8-8.5s42.8 2.9 62.8 8.5c0 0 48.1-33.6 69-27 13.7 34.7 5.2 61.4 2.6 67.9 16 17.7 25.8 31.5 25.8 58.9 0 96.5-58.9 104.2-114.8 110.5 9.2 7.9 17 22.9 17 46.4 0 33.7-.3 75.4-.3 83.6 0 6.5 4.6 14.4 17.3 12.1C436.2 457.8 504 362.9 504 252 504 113.3 391.5 8 252.8 8M105.2 352.9c-1.3 1-1 3.3.7 5.2 1.6 1.6 3.9 2.3 5.2 1 1.3-1 1-3.3-.7-5.2-1.6-1.6-3.9-2.3-5.2-1m-10.8-8.1c-.7 1.3.3 2.9 2.3 3.9 1.6 1 3.6.7 4.3-.7.7-1.3-.3-2.9-2.3-3.9-2-.6-3.6-.3-4.3.7m32.4 35.6c-1.6 1.3-1 4.3 1.3 6.2 2.3 2.3 5.2 2.6 6.5 1 1.3-1.3.7-4.3-1.3-6.2-2.2-2.3-5.2-2.6-6.5-1m-11.4-14.7c-1.6 1-1.6 3.6 0 5.9s4.3 3.3 5.6 2.3c1.6-1.3 1.6-3.9 0-6.2-1.4-2.3-4-3.3-5.6-2"/></svg>
+  </div>
+  <div class="md-source__repository">
+    Repository
+  </div>
+</a>
+      </div>
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+
+<nav class="md-nav md-nav--primary" aria-label="Navegação" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href="." title="TODO List - Atividade de Spec-Driven Development" class="md-nav__button md-logo" aria-label="TODO List - Atividade de Spec-Driven Development" data-md-component="logo">
+      
+  <img src="assets/logo.png" alt="logo">
+
+    </a>
+    TODO List - Atividade de Spec-Driven Development
+  </label>
+  
+    <div class="md-nav__source">
+      <a href="https://github.com/seu-usuario/seu-repositorio" title="Ir para repositório" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path d="M173.9 397.4c0 2-2.3 3.6-5.2 3.6-3.3.3-5.6-1.3-5.6-3.6 0-2 2.3-3.6 5.2-3.6 3-.3 5.6 1.3 5.6 3.6m-31.1-4.5c-.7 2 1.3 4.3 4.3 4.9 2.6 1 5.6 0 6.2-2s-1.3-4.3-4.3-5.2c-2.6-.7-5.5.3-6.2 2.3m44.2-1.7c-2.9.7-4.9 2.6-4.6 4.9.3 2 2.9 3.3 5.9 2.6 2.9-.7 4.9-2.6 4.6-4.6-.3-1.9-3-3.2-5.9-2.9M252.8 8C114.1 8 8 113.3 8 252c0 110.9 69.8 205.8 169.5 239.2 12.8 2.3 17.3-5.6 17.3-12.1 0-6.2-.3-40.4-.3-61.4 0 0-70 15-84.7-29.8 0 0-11.4-29.1-27.8-36.6 0 0-22.9-15.7 1.6-15.4 0 0 24.9 2 38.6 25.8 21.9 38.6 58.6 27.5 72.9 20.9 2.3-16 8.8-27.1 16-33.7-55.9-6.2-112.3-14.3-112.3-110.5 0-27.5 7.6-41.3 23.6-58.9-2.6-6.5-11.1-33.3 2.6-67.9 20.9-6.5 69 27 69 27 20-5.6 41.5-8.5 62.8-8.5s42.8 2.9 62.8 8.5c0 0 48.1-33.6 69-27 13.7 34.7 5.2 61.4 2.6 67.9 16 17.7 25.8 31.5 25.8 58.9 0 96.5-58.9 104.2-114.8 110.5 9.2 7.9 17 22.9 17 46.4 0 33.7-.3 75.4-.3 83.6 0 6.5 4.6 14.4 17.3 12.1C436.2 457.8 504 362.9 504 252 504 113.3 391.5 8 252.8 8M105.2 352.9c-1.3 1-1 3.3.7 5.2 1.6 1.6 3.9 2.3 5.2 1 1.3-1 1-3.3-.7-5.2-1.6-1.6-3.9-2.3-5.2-1m-10.8-8.1c-.7 1.3.3 2.9 2.3 3.9 1.6 1 3.6.7 4.3-.7.7-1.3-.3-2.9-2.3-3.9-2-.6-3.6-.3-4.3.7m32.4 35.6c-1.6 1.3-1 4.3 1.3 6.2 2.3 2.3 5.2 2.6 6.5 1 1.3-1.3.7-4.3-1.3-6.2-2.2-2.3-5.2-2.6-6.5-1m-11.4-14.7c-1.6 1-1.6 3.6 0 5.9s4.3 3.3 5.6 2.3c1.6-1.3 1.6-3.9 0-6.2-1.4-2.3-4-3.3-5.6-2"/></svg>
+  </div>
+  <div class="md-source__repository">
+    Repository
+  </div>
+</a>
+    </div>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+  
+  
+    
+  
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Início
+  
+
+    
+  </span>
+  
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="." class="md-nav__link md-nav__link--active">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Início
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Índice">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Índice
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#visao-geral" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        📋 Visão Geral
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#objetivo-da-atividade" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        🎯 Objetivo da Atividade
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#stack-tecnico" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        🛠️ Stack Técnico
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#estrutura-do-repositorio" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        📁 Estrutura do Repositório
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#como-executar-localmente" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        🚀 Como Executar Localmente
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="🚀 Como Executar Localmente">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#pre-requisitos" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Pré-requisitos
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#passos" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Passos
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#documentacao" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        📖 Documentação
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#funcionalidades-implementadas" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        ✅ Funcionalidades Implementadas
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="✅ Funcionalidades Implementadas">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#us1-cadastrar-nova-tarefa" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        US1: Cadastrar Nova Tarefa
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#us2-remover-tarefa" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        US2: Remover Tarefa
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#us3-adicionar-lembrete-a-tarefa" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        US3: Adicionar Lembrete à Tarefa
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#funcionalidades-adicionais" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Funcionalidades Adicionais
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#testando-a-aplicacao" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        🧪 Testando a Aplicação
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#metodologia-spec-driven-development" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        📝 Metodologia: Spec-Driven Development
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="📝 Metodologia: Spec-Driven Development">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#fase-1-especificacao" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Fase 1: Especificação
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#fase-2-planejamento" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Fase 2: Planejamento
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#fase-3-implementacao" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Fase 3: Implementação
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#fase-4-validacao" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Fase 4: Validação
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#links-da-entrega" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        🔗 Links da Entrega
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#suporte" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        📧 Suporte
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="aula-09-sdd/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Atividade SDD (Aula 09)
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="spec/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Especificação
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="plan/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Plano
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="tasks/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Tasks
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="constitution/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Constitution
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="deploy/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Deploy
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--secondary" aria-label="Índice">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Índice
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#visao-geral" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        📋 Visão Geral
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#objetivo-da-atividade" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        🎯 Objetivo da Atividade
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#stack-tecnico" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        🛠️ Stack Técnico
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#estrutura-do-repositorio" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        📁 Estrutura do Repositório
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#como-executar-localmente" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        🚀 Como Executar Localmente
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="🚀 Como Executar Localmente">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#pre-requisitos" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Pré-requisitos
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#passos" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Passos
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#documentacao" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        📖 Documentação
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#funcionalidades-implementadas" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        ✅ Funcionalidades Implementadas
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="✅ Funcionalidades Implementadas">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#us1-cadastrar-nova-tarefa" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        US1: Cadastrar Nova Tarefa
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#us2-remover-tarefa" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        US2: Remover Tarefa
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#us3-adicionar-lembrete-a-tarefa" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        US3: Adicionar Lembrete à Tarefa
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#funcionalidades-adicionais" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Funcionalidades Adicionais
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#testando-a-aplicacao" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        🧪 Testando a Aplicação
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#metodologia-spec-driven-development" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        📝 Metodologia: Spec-Driven Development
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="📝 Metodologia: Spec-Driven Development">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#fase-1-especificacao" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Fase 1: Especificação
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#fase-2-planejamento" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Fase 2: Planejamento
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#fase-3-implementacao" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Fase 3: Implementação
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#fase-4-validacao" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Fase 4: Validação
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#links-da-entrega" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        🔗 Links da Entrega
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#suporte" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        📧 Suporte
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+
+  
+  
+
+
+<h1 id="todo-list-atividade-academica-de-spec-driven-development">TODO List - Atividade Acadêmica de Spec-Driven Development<a class="headerlink" href="#todo-list-atividade-academica-de-spec-driven-development" title="Permanent link">&para;</a></h1>
+<h2 id="visao-geral">📋 Visão Geral<a class="headerlink" href="#visao-geral" title="Permanent link">&para;</a></h2>
+<p>Bem-vindo à documentação do projeto <strong>TODO List</strong>, uma aplicação MVC desenvolvida com <strong>Spec-Driven Development</strong> (SDD) conforme metodologia ensinada na disciplina de Engenharia de Software (Aula 09).</p>
+<p>Este projeto demonstra os princípios de SDD na prática: especificação clara, arquitetura pragmática e implementação orientada por requisitos.</p>
+<h2 id="objetivo-da-atividade">🎯 Objetivo da Atividade<a class="headerlink" href="#objetivo-da-atividade" title="Permanent link">&para;</a></h2>
+<p>Criar uma aplicação web TODO List que permita:
+- ✓ Cadastrar novas tarefas
+- ✓ Remover tarefas
+- ✓ Adicionar lembretes às tarefas</p>
+<p>Com requisitos não-funcionais:
+- Armazenamento em memória (sem banco de dados persistente)
+- Implantação em servidor gratuito
+- Documentação com MkDocs
+- Todo o código no GitHub</p>
+<h2 id="stack-tecnico">🛠️ Stack Técnico<a class="headerlink" href="#stack-tecnico" title="Permanent link">&para;</a></h2>
+<table>
+<thead>
+<tr>
+<th>Componente</th>
+<th>Tecnologia</th>
+<th>Razão</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Framework Web</strong></td>
+<td>ASP.NET Core 8 MVC</td>
+<td>Simplicidade, conhecimento prévio, MVC padrão educacional</td>
+</tr>
+<tr>
+<td><strong>Linguagem</strong></td>
+<td>C#</td>
+<td>Tipada, segura, bom para grandes projetos</td>
+</tr>
+<tr>
+<td><strong>Views</strong></td>
+<td>Razor Templates</td>
+<td>Sem JavaScript complexo, bindings automáticos</td>
+</tr>
+<tr>
+<td><strong>Armazenamento</strong></td>
+<td>List<Tarefa> em memória</td>
+<td>Conforme requisito do enunciado</td>
+</tr>
+<tr>
+<td><strong>Banco de Dados</strong></td>
+<td>❌ Nenhum</td>
+<td>Dados perdidos ao reiniciar (conforme enunciado)</td>
+</tr>
+<tr>
+<td><strong>Frontend CSS</strong></td>
+<td>Bootstrap 5</td>
+<td>CDN, responsivo, sem build tools</td>
+</tr>
+<tr>
+<td><strong>Documentação</strong></td>
+<td>MkDocs</td>
+<td>Estática, publicável em GitHub Pages</td>
+</tr>
+</tbody>
+</table>
+<h2 id="estrutura-do-repositorio">📁 Estrutura do Repositório<a class="headerlink" href="#estrutura-do-repositorio" title="Permanent link">&para;</a></h2>
+<div class="highlight"><pre><span></span><code>.
+├── .specify/                    # Artefatos do Spec-Kit
+│   ├── extensions.yml
+│   ├── memory/
+│   │   └── constitution.md     # Princípios do projeto
+│   └── scripts/
+├── docs/                        # Documentação MkDocs
+│   ├── index.md
+│   ├── aula-09-sdd.md
+│   ├── spec.md
+│   ├── plan.md
+│   ├── tasks.md
+│   ├── constitution.md
+│   └── deploy.md
+├── specs/
+│   └── 001-todo-list/          # Artefatos SDD
+│       ├── spec.md             # Especificação (user stories)
+│       ├── plan.md             # Plano arquitetural
+│       ├── data-model.md       # Modelo de dados
+│       ├── tasks.md            # Tarefas de implementação
+│       ├── research.md         # Pesquisa técnica
+│       ├── contracts/          # Contratos de API/testes
+│       └── checklists/         # Checklists de qualidade
+├── TodoListMvc/                 # Aplicação MVC
+│   ├── Controllers/
+│   │   └── TasksController.cs
+│   ├── Models/
+│   │   ├── Tarefa.cs
+│   │   └── Lembrete.cs
+│   ├── Services/
+│   │   └── RepositorioTarefas.cs
+│   ├── Views/
+│   │   ├── Tasks/
+│   │   │   ├── Index.cshtml
+│   │   │   ├── Create.cshtml
+│   │   │   └── Edit.cshtml
+│   │   └── Shared/
+│   │       └── _Layout.cshtml
+│   ├── wwwroot/
+│   │   └── css/
+│   │       └── site.css
+│   ├── Program.cs
+│   ├── appsettings.json
+│   └── TodoListMvc.csproj
+├── mkdocs.yml                   # Configuração MkDocs
+├── ENTREGA.md                   # Placeholders de entrega
+└── README.md                    # README do projeto
+</code></pre></div>
+<h2 id="como-executar-localmente">🚀 Como Executar Localmente<a class="headerlink" href="#como-executar-localmente" title="Permanent link">&para;</a></h2>
+<h3 id="pre-requisitos">Pré-requisitos<a class="headerlink" href="#pre-requisitos" title="Permanent link">&para;</a></h3>
+<ul>
+<li>.NET 8 SDK instalado (<a href="https://dotnet.microsoft.com/download">baixar</a>)</li>
+<li>Visual Studio Code (opcional) ou Visual Studio</li>
+</ul>
+<h3 id="passos">Passos<a class="headerlink" href="#passos" title="Permanent link">&para;</a></h3>
+<ol>
+<li>
+<p><strong>Clone o repositório</strong>
+   <div class="highlight"><pre><span></span><code>git<span class="w"> </span>clone<span class="w"> </span>https://github.com/seu-usuario/seu-repositorio.git
+<span class="nb">cd</span><span class="w"> </span>seu-repositorio
+</code></pre></div></p>
+</li>
+<li>
+<p><strong>Navegue até o projeto MVC</strong>
+   <div class="highlight"><pre><span></span><code><span class="nb">cd</span><span class="w"> </span>TodoListMvc
+</code></pre></div></p>
+</li>
+<li>
+<p><strong>Execute a aplicação</strong>
+   <div class="highlight"><pre><span></span><code>dotnet<span class="w"> </span>run
+</code></pre></div></p>
+</li>
+<li>
+<p><strong>Abra no navegador</strong>
+   <div class="highlight"><pre><span></span><code>http://localhost:5125
+</code></pre></div></p>
+</li>
+</ol>
+<p>A aplicação será disponibilizada automaticamente.</p>
+<h2 id="documentacao">📖 Documentação<a class="headerlink" href="#documentacao" title="Permanent link">&para;</a></h2>
+<ul>
+<li><a href="aula-09-sdd/">Atividade SDD</a> - Descrição da atividade e metodologia SDD</li>
+<li><a href="spec/">Especificação</a> - User stories e requisitos</li>
+<li><a href="plan/">Plano</a> - Arquitetura e decisões técnicas</li>
+<li><a href="constitution/">Constitution</a> - Princípios governantes do projeto</li>
+<li><a href="tasks/">Tasks</a> - Lista de tarefas de implementação</li>
+<li><a href="deploy/">Deploy</a> - Como publicar em servidor gratuito</li>
+</ul>
+<h2 id="funcionalidades-implementadas">✅ Funcionalidades Implementadas<a class="headerlink" href="#funcionalidades-implementadas" title="Permanent link">&para;</a></h2>
+<h3 id="us1-cadastrar-nova-tarefa">US1: Cadastrar Nova Tarefa<a class="headerlink" href="#us1-cadastrar-nova-tarefa" title="Permanent link">&para;</a></h3>
+<ul>
+<li>Campo de entrada para título (máx 500 caracteres)</li>
+<li>Validação server-side obrigatória</li>
+<li>Mensagens de erro em português</li>
+<li>Redirecionamento automático para lista</li>
+</ul>
+<h3 id="us2-remover-tarefa">US2: Remover Tarefa<a class="headerlink" href="#us2-remover-tarefa" title="Permanent link">&para;</a></h3>
+<ul>
+<li>Botão "Deletar" em cada tarefa</li>
+<li>Confirmação antes de remover</li>
+<li>Remoção imediata da lista</li>
+<li>Dados dos lembretes também removidos</li>
+</ul>
+<h3 id="us3-adicionar-lembrete-a-tarefa">US3: Adicionar Lembrete à Tarefa<a class="headerlink" href="#us3-adicionar-lembrete-a-tarefa" title="Permanent link">&para;</a></h3>
+<ul>
+<li>Campo de texto para adicionar lembrete</li>
+<li>Cada tarefa pode ter múltiplos lembretes</li>
+<li>Lembretes aparecem em badge abaixo da tarefa</li>
+<li>Botão "✕" para remover lembrete</li>
+<li>Validação de texto não vazio</li>
+</ul>
+<h3 id="funcionalidades-adicionais">Funcionalidades Adicionais<a class="headerlink" href="#funcionalidades-adicionais" title="Permanent link">&para;</a></h3>
+<ul>
+<li>Marcar tarefa como concluída (checkbox)</li>
+<li>Editar título de tarefa existente</li>
+<li>Exibição de data de criação</li>
+<li>Interface responsiva (mobile, tablet, desktop)</li>
+<li>Layout limpo com Bootstrap 5</li>
+</ul>
+<h2 id="testando-a-aplicacao">🧪 Testando a Aplicação<a class="headerlink" href="#testando-a-aplicacao" title="Permanent link">&para;</a></h2>
+<p>A aplicação está completa e pronta para testes. Sugestões:</p>
+<ol>
+<li><strong>Criar tarefas</strong>: Teste adicionar tarefas com títulos diferentes</li>
+<li><strong>Validar</strong>: Tente criar tarefa vazia ou com &gt;500 caracteres (deve falhar)</li>
+<li><strong>Lembretes</strong>: Adicione lembretes a uma tarefa</li>
+<li><strong>Editar</strong>: Clique "Editar" e altere título</li>
+<li><strong>Concluir</strong>: Marque checkbox para marcar como concluída</li>
+<li><strong>Remover</strong>: Delete tarefas (confirmação obrigatória)</li>
+<li><strong>Responsivo</strong>: Teste em tela pequena (F12 → Device Emulation)</li>
+<li><strong>Refresh</strong>: Pressione F5 - dados devem desaparecer (conforme requisito)</li>
+</ol>
+<h2 id="metodologia-spec-driven-development">📝 Metodologia: Spec-Driven Development<a class="headerlink" href="#metodologia-spec-driven-development" title="Permanent link">&para;</a></h2>
+<p>Este projeto foi desenvolvido seguindo a metodologia de <strong>Spec-Driven Development (SDD)</strong>:</p>
+<h3 id="fase-1-especificacao">Fase 1: Especificação<a class="headerlink" href="#fase-1-especificacao" title="Permanent link">&para;</a></h3>
+<ul>
+<li>Escrita de user stories em linguagem clara (português)</li>
+<li>Identificação de critérios de aceitação mensuráveis</li>
+<li>Definição do modelo de dados</li>
+<li>Documentação de requisitos e restrições</li>
+</ul>
+<h3 id="fase-2-planejamento">Fase 2: Planejamento<a class="headerlink" href="#fase-2-planejamento" title="Permanent link">&para;</a></h3>
+<ul>
+<li>Decisões arquiteturais justificadas (WCAG)</li>
+<li>Definição do stack técnico</li>
+<li>Estimativa de esforço</li>
+<li>Identificação de riscos</li>
+</ul>
+<h3 id="fase-3-implementacao">Fase 3: Implementação<a class="headerlink" href="#fase-3-implementacao" title="Permanent link">&para;</a></h3>
+<ul>
+<li>Divisão em tarefas incrementais</li>
+<li>Code review obrigatório</li>
+<li>Testes manuais de cada funcionalidade</li>
+<li>Documentação viva</li>
+</ul>
+<h3 id="fase-4-validacao">Fase 4: Validação<a class="headerlink" href="#fase-4-validacao" title="Permanent link">&para;</a></h3>
+<ul>
+<li>Testes de aceitação contra especificação</li>
+<li>Verificação de requisitos não-funcionais</li>
+<li>Checklist de qualidade</li>
+<li>Documentação final</li>
+</ul>
+<h2 id="links-da-entrega">🔗 Links da Entrega<a class="headerlink" href="#links-da-entrega" title="Permanent link">&para;</a></h2>
+<p>Veja <a href="../ENTREGA.md">ENTREGA.md</a> para links de:
+- Repositório GitHub
+- Aplicação publicada
+- Documentação online</p>
+<h2 id="suporte">📧 Suporte<a class="headerlink" href="#suporte" title="Permanent link">&para;</a></h2>
+<p>Para dúvidas sobre o projeto, consulte:
+- <a href="spec/">Especificação</a>
+- <a href="plan/">Plano</a>
+- <a href="constitution/">Constitution</a>
+- Código comentado em <a href="../TodoListMvc">TodoListMvc/</a></p>
+<hr />
+<p><strong>Desenvolvido com ❤️ utilizando Spec-Driven Development</strong></p>
+
+
+
+
+
+
+
+
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+        
+<div class="md-social">
+  
+    
+    
+    
+    
+      
+      
+    
+    <a href="https://github.com/seu-usuario/seu-repositorio" target="_blank" rel="noopener" title="github.com" class="md-social__link">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path d="M173.9 397.4c0 2-2.3 3.6-5.2 3.6-3.3.3-5.6-1.3-5.6-3.6 0-2 2.3-3.6 5.2-3.6 3-.3 5.6 1.3 5.6 3.6m-31.1-4.5c-.7 2 1.3 4.3 4.3 4.9 2.6 1 5.6 0 6.2-2s-1.3-4.3-4.3-5.2c-2.6-.7-5.5.3-6.2 2.3m44.2-1.7c-2.9.7-4.9 2.6-4.6 4.9.3 2 2.9 3.3 5.9 2.6 2.9-.7 4.9-2.6 4.6-4.6-.3-1.9-3-3.2-5.9-2.9M252.8 8C114.1 8 8 113.3 8 252c0 110.9 69.8 205.8 169.5 239.2 12.8 2.3 17.3-5.6 17.3-12.1 0-6.2-.3-40.4-.3-61.4 0 0-70 15-84.7-29.8 0 0-11.4-29.1-27.8-36.6 0 0-22.9-15.7 1.6-15.4 0 0 24.9 2 38.6 25.8 21.9 38.6 58.6 27.5 72.9 20.9 2.3-16 8.8-27.1 16-33.7-55.9-6.2-112.3-14.3-112.3-110.5 0-27.5 7.6-41.3 23.6-58.9-2.6-6.5-11.1-33.3 2.6-67.9 20.9-6.5 69 27 69 27 20-5.6 41.5-8.5 62.8-8.5s42.8 2.9 62.8 8.5c0 0 48.1-33.6 69-27 13.7 34.7 5.2 61.4 2.6 67.9 16 17.7 25.8 31.5 25.8 58.9 0 96.5-58.9 104.2-114.8 110.5 9.2 7.9 17 22.9 17 46.4 0 33.7-.3 75.4-.3 83.6 0 6.5 4.6 14.4 17.3 12.1C436.2 457.8 504 362.9 504 252 504 113.3 391.5 8 252.8 8M105.2 352.9c-1.3 1-1 3.3.7 5.2 1.6 1.6 3.9 2.3 5.2 1 1.3-1 1-3.3-.7-5.2-1.6-1.6-3.9-2.3-5.2-1m-10.8-8.1c-.7 1.3.3 2.9 2.3 3.9 1.6 1 3.6.7 4.3-.7.7-1.3-.3-2.9-2.3-3.9-2-.6-3.6-.3-4.3.7m32.4 35.6c-1.6 1.3-1 4.3 1.3 6.2 2.3 2.3 5.2 2.6 6.5 1 1.3-1.3.7-4.3-1.3-6.2-2.2-2.3-5.2-2.6-6.5-1m-11.4-14.7c-1.6 1-1.6 3.6 0 5.9s4.3 3.3 5.6 2.3c1.6-1.3 1.6-3.9 0-6.2-1.4-2.3-4-3.3-5.6-2"/></svg>
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    
+    
+      
+      
+      <script id="__config" type="application/json">{"annotate": null, "base": ".", "features": [], "search": "assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "Copiado para \u00e1rea de transfer\u00eancia", "clipboard.copy": "Copiar para \u00e1rea de transfer\u00eancia", "search.result.more.one": "mais 1 nesta p\u00e1gina", "search.result.more.other": "# mais nesta p\u00e1gina", "search.result.none": "Nenhum documento encontrado", "search.result.one": "1 documento encontrado", "search.result.other": "# documentos encontrados", "search.result.placeholder": "Digite para iniciar a busca", "search.result.term.missing": "Ausente", "select.version": "Selecione a vers\u00e3o"}, "version": null}</script>
+    
+    
+      <script src="assets/javascripts/bundle.79ae519e.min.js"></script>
+      
+    
+  </body>
+</html>

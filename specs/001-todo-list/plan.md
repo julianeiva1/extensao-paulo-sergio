@@ -1,23 +1,325 @@
-# Implementation Plan: Gerenciamento de Tarefas em TODO List
+# Plano de Implementação: TODO List MVC
 
-**Branch**: `001-featurename-todo-list` | **Date**: 2026-05-10 | **Spec**: [spec.md](spec.md)
-**Input**: Feature specification from `specs/001-todo-list/spec.md` - TODO List com criar, listar, editar, concluir e remover tarefas
+**Data**: 2026-05-10  
+**Status**: Ready for Implementation  
+**Arquitetura**: ASP.NET Core MVC, Armazenamento em Memória  
+**Escopo**: MVP com 3 funcionalidades principais (cadastrar, remover, lembretes)
 
-## Summary
+## Resumo Executivo
 
-Sistema web de gerenciamento de tarefas simples que permite ao usuário criar, visualizar, editar, marcar como concluída e remover tarefas. Frontend em React consome API REST do backend ASP.NET Core. Arquitetura separada (frontend/backend) com persistência simples de dados. MVP com 5 user stories priorizadas (2x P1 essenciais + 3x P2 complementares). Foco em UX simples, responsiva e sem jargão técnico, com validações claras e mensagens de erro em português.
+Refatoração do projeto anterior (backend/frontend separado) para arquitetura MVC simples em mono-repo que atenda exatamente ao enunciado da atividade. A aplicação será um ASP.NET Core MVC que permite:
+1. Criar tarefas
+2. Remover tarefas  
+3. Adicionar lembretes às tarefas
 
-## Technical Context
+Sem persistência de dados entre execuções (conforme requisito).
 
-**Frontend Language/Version**: React 18+ (TypeScript recomendado para clareza)  
-**Frontend Dependencies**: React, HTTP client (fetch ou axios), gerenciamento de estado simples (useState/useContext)  
-**Backend Language/Version**: C# 11+ com .NET 7+ (ASP.NET Core Web API)  
-**Backend Dependencies**: ASP.NET Core Web API, Entity Framework Core (ORM simples)  
-**Storage**: Banco de dados relacional simples (SQL Server, PostgreSQL, ou SQLite para desenvolvimento)  
-**Testing**: Frontend (Jest/Vitest), Backend (xUnit ou nUnit para C#)  
-**Target Platform**: Web - navegadores modernos (Chrome, Firefox, Safari, Edge)  
-**Project Type**: Web application (SPA + REST API)  
-**Performance Goals**: 
+## Decisões Arquiteturais Justificadas
+
+### Por que MVC (não API+Frontend)?
+- **Requisito**: Enunciado pede aplicação simples
+- **Simplicidade**: 1 projeto, 1 linguagem, deploy único
+- **Custo**: Servidores gratuitos suportam bem ASP.NET Core
+- **Desenvolvimento**: Mais rápido sem overhead de sincronização API/frontend
+- **Manutenção**: Código centralizado, fácil encontrar bugs
+
+### Por que em-memória (não banco de dados)?
+- **Requisito**: Enunciado: "sem persistência entre execuções"
+- **Simplificação**: Sem migrations, SQL, ou ORM complexity
+- **Performance**: RAM é mais rápido que disco
+- **Adequação**: MVP não precisa de dados persistentes
+- **Escalação**: Pattern Repository permite trocar storage depois
+
+## Stack Técnico
+
+| Componente | Tecnologia | Por quê |
+|-----------|-----------|--------|
+| Framework | ASP.NET Core 8 | MVC built-in, .NET é conhecida |
+| Views | Razor Templates | Tudo em C#, sem JS complexo |
+| Storage | List<Tarefa> | Memória, conforme requisito |
+| Banco | ❌ Nenhum | Requisito: sem persistência |
+| CSS | Bootstrap 5 | Responsivo CDN, sem build |
+| Deployment | Free Tier | Heroku, Railway, Azure Free |
+
+## Estrutura do Projeto
+
+```
+TodoListMvc/
+├── Controllers/
+│   └── TasksController.cs        # Ações: Index, Create, Edit, Delete, Toggle, AddReminder
+├── Models/
+│   ├── Tarefa.cs                 # Modelo principal
+│   └── Lembrete.cs               # Modelo de lembrete
+├── Services/
+│   └── RepositorioTarefas.cs     # Singleton in-memory repository
+├── Views/
+│   ├── Shared/
+│   │   ├── Layout.cshtml         # Template base
+│   │   └── _ValidationScriptsPartial.cshtml
+│   └── Tasks/
+│       ├── Index.cshtml          # Lista de tarefas
+│       ├── Create.cshtml         # Criar tarefa
+│       └── Edit.cshtml           # Editar tarefa
+├── wwwroot/
+│   ├── css/
+│   │   └── site.css              # Estilos customizados
+│   └── lib/                       # Bootstrap CDN (via package.json ou lib local)
+├── appsettings.json              # Configurações
+├── Program.cs                    # Setup da aplicação
+└── TodoListMvc.csproj           # Projeto file
+
+```
+
+## Models
+
+### Tarefa.cs
+```csharp
+public class Tarefa
+{
+    public Guid Id { get; set; } = Guid.NewGuid();
+    
+    [Required(ErrorMessage = "O título é obrigatório")]
+    [StringLength(500, ErrorMessage = "O título não pode ter mais de 500 caracteres")]
+    public string Titulo { get; set; } = string.Empty;
+    
+    public bool Concluida { get; set; } = false;
+    
+    public DateTime DataCriacao { get; set; } = DateTime.UtcNow;
+    
+    public List<Lembrete> Lembretes { get; set; } = new();
+}
+```
+
+### Lembrete.cs
+```csharp
+public class Lembrete
+{
+    public Guid Id { get; set; } = Guid.NewGuid();
+    
+    [Required]
+    public string Texto { get; set; } = string.Empty;
+    
+    public DateTime DataCriacao { get; set; } = DateTime.UtcNow;
+}
+```
+
+## Repositório (In-Memory)
+
+### RepositorioTarefas.cs (Singleton)
+Armazena todas as tarefas em `List<Tarefa>` durante execução da aplicação.
+
+Responsabilidades:
+- CRUD para tarefas
+- CRUD para lembretes
+- Validações de negócio
+- Thread-safety (lock se necessário)
+
+Métodos principais:
+- `List<Tarefa> ObterTodas()` - Retorna todas as tarefas
+- `Tarefa? ObterPorId(Guid id)` - Busca tarefa específica
+- `Tarefa Criar(string titulo)` - Cria nova tarefa com validação
+- `bool Atualizar(Guid id, string titulo)` - Atualiza título
+- `Tarefa AlternarConclusao(Guid id)` - Marca/desmarca como concluída
+- `bool Remover(Guid id)` - Remove tarefa
+- `Lembrete AdicionarLembrete(Guid tarefaId, string texto)` - Novo lembrete
+- `bool RemoverLembrete(Guid tarefaId, Guid lembreteId)` - Remove lembrete
+- `Lembrete AtualizarLembrete(Guid tarefaId, Guid lembreteId, string novoTexto)` - Edita lembrete
+
+## Controller
+
+### TasksController.cs
+
+Ações HTTP:
+
+1. **Index()** - GET /tasks
+   - Lista todas as tarefas
+   - Model: `List<Tarefa>`
+   - View: Index.cshtml
+
+2. **Create()** - GET /tasks/create
+   - Renderiza formulário em branco
+   - View: Create.cshtml
+
+3. **Create(Tarefa)** - POST /tasks/create
+   - Valida modelo (server-side)
+   - Chama Repositorio.Criar()
+   - Sucesso: Redirect /tasks
+   - Erro: Re-renderiza Create.cshtml com erros
+
+4. **Edit(Guid id)** - GET /tasks/{id}/edit
+   - Busca tarefa e renderiza formulário
+   - View: Edit.cshtml
+
+5. **Edit(Guid id, Tarefa)** - POST /tasks/{id}/edit
+   - Valida modelo
+   - Chama Repositorio.Atualizar()
+   - Redirect /tasks
+
+6. **Delete(Guid id)** - POST /tasks/{id}/delete
+   - Remove tarefa
+   - Redirect /tasks
+
+7. **AlternarConclusao(Guid id)** - POST /tasks/{id}/toggle
+   - Marca/desmarca como concluída
+   - Redirect /tasks (ou AJAX)
+
+8. **AdicionarLembrete(Guid id, string texto)** - POST /tasks/{id}/reminder
+   - Valida texto
+   - Chama Repositorio.AdicionarLembrete()
+   - Redirect /tasks
+
+9. **RemoverLembrete(Guid id, Guid lembreteId)** - POST /tasks/{id}/reminder/{lembreteId}/delete
+   - Chama Repositorio.RemoverLembrete()
+   - Redirect /tasks
+
+## Views (Razor Templates)
+
+### Layout.cshtml
+Estrutura base com:
+- Header com "TODO List"
+- Bootstrap CSS
+- Responsivo
+- Footer (opcional)
+
+### Index.cshtml
+- Lista de todas as tarefas
+- Cada tarefa exibe:
+  - [ ] Checkbox (toggle concluída)
+  - Título (com strikethrough se concluída)
+  - Botão "Editar"
+  - Botão "Remover"
+  - Lembretes (se houver)
+  - Link "Adicionar lembrete"
+- Formulário rápido no topo para nova tarefa
+- Mensagem se vazio: "Nenhuma tarefa cadastrada"
+
+### Create.cshtml
+- Formulário para criar tarefa
+- Campo: Titulo (required, max 500)
+- Validação server-side
+- Mensagens de erro em português
+- Botão: "Criar"
+- Link: "Voltar"
+
+### Edit.cshtml
+- Formulário para editar tarefa
+- Campo: Titulo (pré-preenchido)
+- Botão: "Atualizar"
+- Link: "Voltar"
+
+## Configuração (Program.cs)
+
+```csharp
+var builder = WebApplication.CreateBuilder(args);
+
+// Add services to DI container
+builder.Services.AddControllersWithViews();
+builder.Services.AddSingleton<RepositorioTarefas>();
+
+var app = builder.Build();
+
+// Configure HTTP request pipeline
+if (!app.Environment.IsDevelopment())
+{
+    app.UseExceptionHandler("/Home/Error");
+    app.UseHsts();
+}
+
+app.UseHttpsRedirection();
+app.UseStaticFiles();
+app.UseRouting();
+app.MapControllerRoute(
+    name: "default",
+    pattern: "{controller=Tasks}/{action=Index}/{id?}");
+
+app.Run();
+```
+
+## Implementação Sequencial
+
+### Fase 1: Setup Projeto
+- [ ] Criar novo projeto ASP.NET Core MVC
+- [ ] Adicionar Bootstrap CSS (CDN)
+- [ ] Setup layout base
+
+### Fase 2: Models & Repositório
+- [ ] Criar Tarefa.cs com validações
+- [ ] Criar Lembrete.cs
+- [ ] Criar RepositorioTarefas.cs (Singleton)
+
+### Fase 3: Controller & Views
+- [ ] Criar TasksController.cs
+- [ ] Criar Index.cshtml
+- [ ] Criar Create.cshtml
+- [ ] Criar Edit.cshtml
+
+### Fase 4: Funcionalidades
+- [ ] Criar tarefa (validação)
+- [ ] Remover tarefa
+- [ ] Adicionar lembrete
+- [ ] Editar lembrete
+- [ ] Remover lembrete
+- [ ] Marcar/desmarcar concluída
+
+### Fase 5: Testes & Polish
+- [ ] Testes manuais de fluxos críticos
+- [ ] Responsividade em múltiplos tamanhos
+- [ ] Mensagens de erro em português
+- [ ] UX review
+
+## Validações
+
+### Server-Side (Obrigatório)
+```csharp
+// Titulo obrigatório
+if (string.IsNullOrWhiteSpace(tarefa.Titulo))
+    throw new ArgumentException("Título não pode ser vazio");
+
+// Titulo max 500
+if (tarefa.Titulo.Length > 500)
+    throw new ArgumentException("Título max 500 caracteres");
+```
+
+### Client-Side (HTML5)
+```html
+<input type="text" name="Titulo" required maxlength="500" />
+```
+
+## Deployment
+
+### Local Development
+```bash
+dotnet new mvc -n TodoListMvc
+cd TodoListMvc
+dotnet run
+# Acessa http://localhost:5000
+```
+
+### Production (Free Server)
+1. Heroku: `git push heroku main`
+2. Railway: Conectar repo, auto-deploy
+3. Azure Free Tier: Web App .NET Core
+
+## Requisitos Não-Funcionais
+
+| Requisito | Implementação |
+|-----------|--------------|
+| **Responsivo** | Bootstrap grid + media queries |
+| **Português** | Todas as mensagens, labels, validações |
+| **Performance** | <100ms para operações (em-memória é rápido) |
+| **Segurança** | CSRF tokens (ASP.NET Core automático), HTML encoding |
+| **Acessibilidade** | Labels associadas, contrast mínimo AA |
+| **Browser** | Chrome, Firefox, Safari (2 versões recentes) |
+
+## Próximas Etapas
+
+1. ✅ Definir arquitetura
+2. ⏳ Criar projeto
+3. ⏳ Implementar Models
+4. ⏳ Implementar Repositório
+5. ⏳ Implementar Controller & Views
+6. ⏳ Testes manuais
+7. ⏳ Deploy 
   - Ações principais: < 1 segundo (criar, editar, remover)
   - Reflexo de mudanças: < 500ms (conforme constitution)
   - Compatível com conexão instável  

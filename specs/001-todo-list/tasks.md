@@ -1,23 +1,275 @@
 ---
-description: "Task list for TODO List feature implementation"
+description: "Task list for TODO List MVC implementation"
 ---
 
-# Tasks: Gerenciamento de Tarefas em TODO List
+# Tasks: TODO List MVC Implementation
 
-**Feature**: TODO List Management (001-todo-list)  
-**Branch**: `001-featurename-todo-list`  
-**Input**: Design documents from `specs/001-todo-list/` (plan.md, spec.md, research.md, data-model.md, contracts/)  
-**Prerequisites**: All design documents complete ✅
+**Feature**: TODO List MVC (001-todo-list-mvc)  
+**Architecture**: ASP.NET Core MVC, In-Memory Storage  
+**Date**: 2026-05-10
 
-**Organization**: Tasks grouped by user story (US1-US5) to enable independent implementation and testing  
-**Dependencies**: Phase 1 (Setup) → Phase 2 (Foundational) → Phases 3-7 (User Stories in parallel)  
-**Parallelization**: Most backend+frontend tasks for same feature can run in parallel ([P] marker)
+## Phases Overview
+
+- **Phase 1**: Project Setup
+- **Phase 2**: Models & Core Infrastructure
+- **Phase 3**: Repository & Business Logic
+- **Phase 4**: Controller Implementation
+- **Phase 5**: Views & Frontend
+- **Phase 6**: Testing & Validation
 
 ---
 
-## Format: `[ID] [P?] [Story] Description`
+## Phase 1: Project Setup
 
-- **[P]**: Can run in parallel (different files, no dependencies)
+- [x] T001 Create new ASP.NET Core MVC project named TodoListMvc
+- [x] T002 Add Bootstrap 5 CSS reference (CDN in Layout.cshtml)
+- [x] T003 Create folder structure (Models/, Views/Tasks/, Services/)
+- [x] T004 Setup project.csproj with required dependencies
+
+## Phase 2: Models & Infrastructure
+
+- [x] T005 Create Models/Tarefa.cs with validation attributes
+  - Guid Id
+  - string Titulo (required, max 500)
+  - bool Concluida (default false)
+  - DateTime DataCriacao (UTC)
+  - List<Lembrete> Lembretes
+  
+- [x] T006 Create Models/Lembrete.cs
+  - Guid Id
+  - string Texto (required)
+  - DateTime DataCriacao (UTC)
+
+- [x] T007 Create Views/Shared/Layout.cshtml
+  - Bootstrap CSS
+  - Page title
+  - @RenderBody()
+  - Responsive design
+
+## Phase 3: Repository & Business Logic
+
+- [x] T008 Create Services/RepositorioTarefas.cs (Singleton)
+  - Private List<Tarefa> storage
+  - Constructor initializes with empty list
+  
+- [x] T009 Implement RepositorioTarefas methods - Read
+  - ObterTodas() → List<Tarefa>
+  - ObterPorId(Guid id) → Tarefa?
+
+- [x] T010 Implement RepositorioTarefas methods - Create
+  - Criar(string titulo) → Tarefa
+  - Validate: not null, not empty, not whitespace only
+  - Validate: max 500 chars
+  - Generate new Guid
+  - Set DataCriacao = DateTime.UtcNow
+  - Add to list
+
+- [x] T011 Implement RepositorioTarefas methods - Update
+  - Atualizar(Guid id, string novoTitulo) → bool
+  - Validate: same as Criar
+  - Find tarefa by id
+  - Update Titulo
+  - Return success
+
+- [x] T012 Implement RepositorioTarefas methods - Toggle Completion
+  - AlternarConclusao(Guid id) → Tarefa
+  - Find by id
+  - Toggle Concluida
+  - Return updated tarefa
+
+- [x] T013 Implement RepositorioTarefas methods - Delete
+  - Remover(Guid id) → bool
+  - Find and remove from list
+  - Return success
+
+- [x] T014 Implement RepositorioTarefas methods - Reminders
+  - AdicionarLembrete(Guid tarefaId, string texto) → Lembrete
+  - RemoverLembrete(Guid tarefaId, Guid lembreteId) → bool
+  - AtualizarLembrete(Guid tarefaId, Guid lembreteId, string novoTexto) → bool
+
+- [x] T015 Register RepositorioTarefas as Singleton in Program.cs
+
+## Phase 4: Controller
+
+- [x] T016 Create Controllers/TasksController.cs extending Controller
+  - Inject RepositorioTarefas via constructor
+  - Create private _repositorio field
+
+- [x] T017 Implement TasksController.Index()
+  - GET /tasks
+  - Call _repositorio.ObterTodas()
+  - Pass List<Tarefa> to View
+  - Return View("Index", tarefas)
+
+- [x] T018 Implement TasksController.Create() GET
+  - GET /tasks/create
+  - Return empty Create view
+
+- [x] T019 Implement TasksController.Create() POST
+  - POST /tasks/create (model Tarefa)
+  - Validate ModelState
+  - Call _repositorio.Criar(model.Titulo)
+  - Success: RedirectToAction("Index")
+  - Error: Return View with ModelState errors
+
+- [x] T020 Implement TasksController.Edit() GET
+  - GET /tasks/{id}/edit
+  - Get tarefa by id
+  - If not found: return NotFound
+  - Return View with tarefa
+
+- [x] T021 Implement TasksController.Edit() POST
+  - POST /tasks/{id}/edit
+  - Validate ModelState
+  - Call _repositorio.Atualizar(id, titulo)
+  - Redirect to Index
+
+- [x] T022 Implement TasksController.Delete()
+  - POST /tasks/{id}/delete
+  - Call _repositorio.Remover(id)
+  - Redirect to Index
+
+- [x] T023 Implement TasksController.AlternarConclusao()
+  - POST /tasks/{id}/toggle
+  - Call _repositorio.AlternarConclusao(id)
+  - Redirect to Index
+
+- [x] T024 Implement TasksController.AdicionarLembrete()
+  - POST /tasks/{id}/reminder
+  - Accept texto parameter
+  - Call _repositorio.AdicionarLembrete(id, texto)
+  - Redirect to Index
+
+- [x] T025 Implement TasksController.RemoverLembrete()
+  - POST /tasks/{id}/reminder/{lembreteId}/delete
+  - Call _repositorio.RemoverLembrete(id, lembreteId)
+  - Redirect to Index
+
+## Phase 5: Views
+
+- [x] T026 Create Views/Tasks/Index.cshtml
+  - Display all tasks from Model (List<Tarefa>)
+  - For each task:
+    - Checkbox for Concluida toggle
+    - Title text (strikethrough if Concluida)
+    - Edit button → /tasks/{id}/edit
+    - Delete button → form POST /tasks/{id}/delete
+    - List of Lembretes (if any)
+    - "Add reminder" link
+  - Empty state message if no tasks
+  - Quick add form at top
+
+- [x] T027 Create Views/Tasks/Create.cshtml
+  - Form with POST action to /tasks/create
+  - Text input for Titulo (required, maxlength 500)
+  - Submit button "Criar"
+  - Display validation errors
+  - Back link
+  
+- [x] T028 Create Views/Tasks/Edit.cshtml
+  - Form with POST action to /tasks/{id}/edit
+  - Text input pre-filled with Tarefa.Titulo
+  - Submit button "Atualizar"
+  - Display validation errors
+  - Back link
+
+- [x] T029 Add CSS styling (wwwroot/css/site.css)
+  - Completed task styling (strikethrough, lighter color)
+  - Button styling
+  - Responsive layout
+  - Reminder block styling
+
+## Phase 6: Testing & Validation
+
+- [ ] T030 Manual test: Create tarefa with valid title
+  - Should appear in list
+  - Should be uncompleted
+
+- [ ] T031 Manual test: Create tarefa with empty title
+  - Should show validation error
+  - Should not be added
+
+- [ ] T032 Manual test: Create tarefa with only spaces
+  - Should show validation error
+  - Should not be added
+
+- [ ] T033 Manual test: Create tarefa with 500 chars
+  - Should succeed
+  - Should display correctly
+
+- [ ] T034 Manual test: Create tarefa with >500 chars
+  - Should show validation error
+
+- [ ] T035 Manual test: Delete tarefa
+  - Should disappear from list
+  - Remaining tasks unchanged
+
+- [ ] T036 Manual test: Toggle completed
+  - Completed: strikethrough + different color
+  - Uncompleted: normal styling
+  - Can toggle back and forth
+
+- [ ] T037 Manual test: Add reminder
+  - Should appear below task
+  - Should be editable
+  - Should be removable
+
+- [ ] T038 Manual test: Responsive design
+  - Test on 320px width (mobile)
+  - Test on 768px width (tablet)
+  - Test on 1200px+ width (desktop)
+  - All elements readable and clickable
+
+- [ ] T039 Manual test: Create/Edit/Delete flow
+  - Create 3 tasks
+  - Edit one title
+  - Add reminders to 2 tasks
+  - Delete one
+  - Verify list consistency
+
+- [ ] T040 Manual test: Page refresh
+  - All data lost (conforme requisito)
+  - Empty list after F5
+  - No browser cache preservation
+
+- [ ] T041 Manual test: Portuguese messages
+  - Validation errors in Portuguese
+  - Button labels in Portuguese
+  - All UI text in Portuguese
+
+- [ ] T042 Manual test: Performance
+  - Add 50 tasks rapidly
+  - UI remains responsive
+  - No lag on list update
+
+## Checklist
+
+### Before Release
+- [ ] All tasks completed
+- [ ] All manual tests passed
+- [ ] No console errors (F12)
+- [ ] Portuguese messages verified
+- [ ] Responsive design verified
+- [ ] User flows tested end-to-end
+
+### Project Structure
+- [ ] folder: Models/
+- [ ] folder: Services/
+- [ ] folder: Views/Tasks/
+- [ ] folder: wwwroot/css/
+- [ ] file: Program.cs configured
+- [ ] file: appsettings.json present
+
+### Files Created
+- [ ] Models/Tarefa.cs
+- [ ] Models/Lembrete.cs
+- [ ] Services/RepositorioTarefas.cs
+- [ ] Controllers/TasksController.cs
+- [ ] Views/Shared/Layout.cshtml
+- [ ] Views/Tasks/Index.cshtml
+- [ ] Views/Tasks/Create.cshtml
+- [ ] Views/Tasks/Edit.cshtml
+- [ ] wwwroot/css/site.css
 - **[Story]**: Which user story (e.g., US1, US2, US3)
 - File paths based on structure from plan.md: `backend/src/...` and `frontend/src/...`
 
@@ -27,12 +279,12 @@ description: "Task list for TODO List feature implementation"
 
 **Goal**: Initialize both frontend and backend projects with dependencies
 
-- [ ] T001 [P] Setup backend project structure with dotnet CLI in `backend/`
-- [ ] T002 [P] Setup frontend project structure with Vite/React in `frontend/`
-- [ ] T003 [P] Install backend dependencies (EF Core, ASP.NET Core packages) in `backend/IFES.Extensao.API.csproj`
-- [ ] T004 [P] Install frontend dependencies (React, axios, testing libraries) in `frontend/package.json`
-- [ ] T005 [P] Configure backend CORS policy for frontend in `backend/Program.cs`
-- [ ] T006 [P] Configure backend database provider (SQLite for dev) in `backend/Program.cs`
+- [x] T001 [P] Setup backend project structure with dotnet CLI in `backend/`
+- [x] T002 [P] Setup frontend project structure with Vite/React in `frontend/`
+- [x] T003 [P] Install backend dependencies (EF Core, ASP.NET Core packages) in `backend/IFES.Extensao.API.csproj`
+- [x] T004 [P] Install frontend dependencies (React, axios, testing libraries) in `frontend/package.json`
+- [x] T005 [P] Configure backend CORS policy for frontend in `backend/Program.cs`
+- [x] T006 [P] Configure backend database provider (SQLite for dev) in `backend/Program.cs`
 
 ---
 
@@ -42,18 +294,18 @@ description: "Task list for TODO List feature implementation"
 
 **⚠️ CRITICAL**: No user story work can begin until this phase is complete
 
-- [ ] T007 Create Entity Framework DbContext in `backend/Data/AppDbContext.cs`
-- [ ] T008 Create Task model entity in `backend/Models/Task.cs` with 5 properties (Id, Title, IsCompleted, DateCreated, DateModified)
-- [ ] T009 Create Task validation rules in `backend/Models/Task.cs` (required, max 500 chars, trimmed)
-- [ ] T010 Create Entity Framework migrations for Task table in `backend/Migrations/`
-- [ ] T011 [P] Create TaskService with CRUD logic in `backend/Services/TaskService.cs` (GetAllTasks, GetTaskById, CreateTask, UpdateTask, DeleteTask, ToggleComplete)
-- [ ] T012 [P] Create request/response DTOs in `backend/Models/CreateTaskRequest.cs` and `backend/Models/TaskResponse.cs`
-- [ ] T013 [P] Create TasksController with HTTP endpoints in `backend/Controllers/TasksController.cs` (GET, POST, PUT, PATCH, DELETE)
-- [ ] T014 [P] Create error handling middleware in `backend/Middleware/ErrorHandlingMiddleware.cs` with Portuguese error messages
-- [ ] T015 [P] Create HTTP client service in `frontend/src/services/taskService.ts` with axios configuration
-- [ ] T016 [P] Create custom hook useTasks in `frontend/src/hooks/useTasks.ts` for state management
-- [ ] T017 [P] Create ErrorMessage component in `frontend/src/components/ErrorMessage.tsx` for displaying errors
-- [ ] T018 Setup frontend development environment (vite.config.ts, tsconfig.json, API proxy)
+- [x] T007 Create Entity Framework DbContext in `backend/Data/AppDbContext.cs`
+- [x] T008 Create Task model entity in `backend/Models/Task.cs` with 5 properties (Id, Title, IsCompleted, DateCreated, DateModified)
+- [x] T009 Create Task validation rules in `backend/Models/Task.cs` (required, max 500 chars, trimmed)
+- [x] T010 Create Entity Framework migrations for Task table in `backend/Migrations/`
+- [x] T011 [P] Create TaskService with CRUD logic in `backend/Services/TaskService.cs` (GetAllTasks, GetTaskById, CreateTask, UpdateTask, DeleteTask, ToggleComplete)
+- [x] T012 [P] Create request/response DTOs in `backend/Models/CreateTaskRequest.cs` and `backend/Models/TaskResponse.cs`
+- [x] T013 [P] Create TasksController with HTTP endpoints in `backend/Controllers/TasksController.cs` (GET, POST, PUT, PATCH, DELETE)
+- [x] T014 [P] Create error handling middleware in `backend/Middleware/ErrorHandlingMiddleware.cs` with Portuguese error messages
+- [x] T015 [P] Create HTTP client service in `frontend/src/services/taskService.ts` with axios configuration
+- [x] T016 [P] Create custom hook useTasks in `frontend/src/hooks/useTasks.ts` for state management
+- [x] T017 [P] Create ErrorMessage component in `frontend/src/components/ErrorMessage.tsx` for displaying errors
+- [x] T018 Setup frontend development environment (vite.config.ts, tsconfig.json, API proxy)
 
 **Checkpoint**: Foundation ready - all user story tasks can now proceed in parallel
 
@@ -67,19 +319,19 @@ description: "Task list for TODO List feature implementation"
 
 ### Tests for User Story 1
 
-- [ ] T019 [P] [US1] Unit test for TaskService.GetAllTasks returns tasks ordered DESC by DateCreated in `backend/Tests/Unit/TaskServiceTests.cs`
-- [ ] T020 [P] [US1] Integration test for GET /api/v1/tasks endpoint in `backend/Tests/Integration/TasksControllerTests.cs`
-- [ ] T021 [P] [US1] Integration test for empty task list returns [] in `backend/Tests/Integration/TasksControllerTests.cs`
+- [x] T019 [P] [US1] Unit test for TaskService.GetAllTasks returns tasks ordered DESC by DateCreated in `backend/Tests/Unit/TaskServiceTests.cs`
+- [x] T020 [P] [US1] Integration test for GET /api/v1/tasks endpoint in `backend/Tests/Integration/TasksControllerTests.cs`
+- [x] T021 [P] [US1] Integration test for empty task list returns [] in `backend/Tests/Integration/TasksControllerTests.cs`
 
 ### Implementation for User Story 1
 
-- [ ] T022 [P] [US1] Create TaskList component displaying all tasks in `frontend/src/components/TaskList.tsx`
-- [ ] T023 [P] [US1] Create TaskItem component showing individual task with completion state in `frontend/src/components/TaskItem.tsx`
-- [ ] T024 [US1] Implement GET /api/v1/tasks in TasksController returning list ordered DESC in `backend/Controllers/TasksController.cs`
-- [ ] T025 [US1] Implement visual distinction for completed tasks (strikethrough, color, icon) in `frontend/src/components/TaskItem.tsx`
-- [ ] T026 [US1] Implement empty state message "Nenhuma tarefa cadastrada" in `frontend/src/components/TaskList.tsx`
-- [ ] T027 [US1] Test TaskList loads tasks from backend on component mount in `frontend/src/components/TaskList.test.tsx`
-- [ ] T028 [US1] Add responsive styling for task list in `frontend/src/App.css` (mobile-first, breakpoint 768px)
+- [x] T022 [P] [US1] Create TaskList component displaying all tasks in `frontend/src/components/TaskList.tsx`
+- [x] T023 [P] [US1] Create TaskItem component showing individual task with completion state in `frontend/src/components/TaskItem.tsx`
+- [x] T024 [US1] Implement GET /api/v1/tasks in TasksController returning list ordered DESC in `backend/Controllers/TasksController.cs`
+- [x] T025 [US1] Implement visual distinction for completed tasks (strikethrough, color, icon) in `frontend/src/components/TaskItem.tsx`
+- [x] T026 [US1] Implement empty state message "Nenhuma tarefa cadastrada" in `frontend/src/components/TaskList.tsx`
+- [x] T027 [US1] Test TaskList loads tasks from backend on component mount in `frontend/src/components/TaskList.test.tsx`
+- [x] T028 [US1] Add responsive styling for task list in `frontend/src/App.css` (mobile-first, breakpoint 768px)
 
 **Checkpoint**: User Story 1 complete - list displays correctly
 
