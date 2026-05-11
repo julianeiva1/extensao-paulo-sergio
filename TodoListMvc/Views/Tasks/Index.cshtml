@@ -62,6 +62,12 @@
                                             <strong>@tarefa.Titulo</strong>
                                         </label>
                                     </div>
+                                    @if (!string.IsNullOrWhiteSpace(tarefa.Descricao))
+                                    {
+                                        <div class="ms-4 mt-2 p-2 bg-light rounded">
+                                            <small class="text-dark d-block">@tarefa.Descricao</small>
+                                        </div>
+                                    }
                                     <small class="text-muted d-block mt-1">
                                         Criada em: @tarefa.DataCriacao.ToString("dd/MM/yyyy HH:mm")
                                     </small>

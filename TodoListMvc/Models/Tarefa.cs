@@ -22,6 +22,13 @@ namespace TodoListMvc.Models
         public string Titulo { get; set; } = string.Empty;
 
         /// <summary>
+        /// Descrição da tarefa.
+        /// Opcional, máximo 2000 caracteres.
+        /// </summary>
+        [StringLength(2000, ErrorMessage = "A descrição não pode ter mais de 2000 caracteres")]
+        public string? Descricao { get; set; }
+
+        /// <summary>
         /// Indica se a tarefa foi concluída.
         /// Default: false (não concluída).
         /// </summary>

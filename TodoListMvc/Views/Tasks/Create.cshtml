@@ -52,6 +52,19 @@
                     }
                 </div>
 
+                <div class="mb-3">
+                    <label for="descricao" class="form-label">Descrição (Opcional)</label>
+                    <textarea class="form-control" 
+                              id="descricao" 
+                              name="Descricao" 
+                              placeholder="Digite uma descrição detalhada para sua tarefa..."
+                              rows="3"
+                              maxlength="2000">@Model?.Descricao</textarea>
+                    <small class="form-text text-muted d-block mt-1">
+                        Máximo de 2000 caracteres
+                    </small>
+                </div>
+
                 <div class="d-grid gap-2 d-md-flex justify-content-md-end">
                     <a href="@Url.Action("Index")" class="btn btn-secondary btn-lg">Cancelar</a>
                     <button type="submit" class="btn btn-success btn-lg">Criar Tarefa</button>

@@ -45,9 +45,10 @@ namespace TodoListMvc.Services
         /// Cria uma nova tarefa com validação do título.
         /// </summary>
         /// <param name="titulo">Título da tarefa</param>
+        /// <param name="descricao">Descrição opcional da tarefa</param>
         /// <returns>Tarefa criada</returns>
         /// <exception cref="ArgumentException">Se título inválido</exception>
-        public Tarefa Criar(string titulo)
+        public Tarefa Criar(string titulo, string? descricao = null)
         {
             ValidarTitulo(titulo);
 
@@ -55,6 +56,7 @@ namespace TodoListMvc.Services
             {
                 Id = Guid.NewGuid(),
                 Titulo = titulo.Trim(),
+                Descricao = string.IsNullOrWhiteSpace(descricao) ? null : descricao.Trim(),
                 Concluida = false,
                 DataCriacao = DateTime.UtcNow,
                 DataModificacao = DateTime.UtcNow,

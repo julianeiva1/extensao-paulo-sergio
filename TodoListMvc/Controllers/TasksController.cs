@@ -44,13 +44,13 @@ namespace TodoListMvc.Controllers
         /// </summary>
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public IActionResult Create([Bind("Titulo")] Tarefa tarefa)
+        public IActionResult Create([Bind("Titulo,Descricao")] Tarefa tarefa)
         {
             try
             {
                 if (ModelState.IsValid)
                 {
-                    _repositorio.Criar(tarefa.Titulo);
+                    _repositorio.Criar(tarefa.Titulo, tarefa.Descricao);
                     _logger.LogInformation("Tarefa criada com sucesso");
                     return RedirectToAction(nameof(Index));
                 }
