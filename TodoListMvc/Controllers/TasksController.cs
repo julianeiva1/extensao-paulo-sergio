@@ -163,53 +163,5 @@ namespace TodoListMvc.Controllers
         {
             return ToggleComplete(id);
         }
-
-        /// <summary>
-        /// POST: /tasks/{tarefaId}/reminder
-        /// Adiciona um lembrete a uma tarefa.
-        /// </summary>
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public IActionResult AdicionarLembrete(Guid tarefaId, string texto)
-        {
-            try
-            {
-                if (string.IsNullOrWhiteSpace(texto))
-                {
-                    ModelState.AddModelError("texto", "O texto do lembrete não pode ser vazio");
-                    return RedirectToAction(nameof(Index));
-                }
-
-                _repositorio.AdicionarLembrete(tarefaId, texto);
-                _logger.LogInformation("Lembrete adicionado à tarefa {TarefaId}", tarefaId);
-                return RedirectToAction(nameof(Index));
-            }
-            catch (ArgumentException ex)
-            {
-                _logger.LogWarning("Erro ao adicionar lembrete: {Mensagem}", ex.Message);
-                return NotFound();
-            }
-        }
-
-        /// <summary>
-        /// POST: /tasks/{tarefaId}/reminder/{lembreteId}/delete
-        /// Remove um lembrete de uma tarefa.
-        /// </summary>
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public IActionResult RemoverLembrete(Guid tarefaId, Guid lembreteId)
-        {
-            var sucesso = _repositorio.RemoverLembrete(tarefaId, lembreteId);
-            if (sucesso)
-            {
-                _logger.LogInformation("Lembrete {LembreteId} removido de tarefa {TarefaId}", lembreteId, tarefaId);
-            }
-            else
-            {
-                _logger.LogWarning("Lembrete {LembreteId} não encontrado em tarefa {TarefaId}", lembreteId, tarefaId);
-            }
-
-            return RedirectToAction(nameof(Index));
-        }
     }
 }

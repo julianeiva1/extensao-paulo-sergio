@@ -79,28 +79,6 @@
                                     <small class="text-muted d-block mt-1">
                                         Criada em: @tarefa.DataCriacao.ToString("dd/MM/yyyy HH:mm")
                                     </small>
-
-                                    @if (tarefa.Lembretes != null && tarefa.Lembretes.Count > 0)
-                                    {
-                                        <div class="mt-3 ms-4">
-                                            <h6 class="text-secondary">Lembretes:</h6>
-                                            <ul class="list-unstyled">
-                                                @foreach (var lembrete in tarefa.Lembretes)
-                                                {
-                                                    <li class="d-flex justify-content-between align-items-center mb-2">
-                                                        <span class="badge bg-info text-dark">@lembrete.Texto</span>
-                                                        <form method="post" 
-                                                              action="@Url.Action("RemoverLembrete", new { tarefaId = tarefa.Id, lembreteId = lembrete.Id })" 
-                                                              style="display:inline;">
-                                                            <button type="submit" class="btn btn-sm btn-outline-danger" title="Remover lembrete">
-                                                                ✕
-                                                            </button>
-                                                        </form>
-                                                    </li>
-                                                }
-                                            </ul>
-                                        </div>
-                                    }
                                 </div>
                                 <div class="col-md-4 text-end">
                                     <div class="d-flex gap-2 justify-content-end mb-2">
@@ -111,26 +89,12 @@
                                               action="@Url.Action("Delete", new { id = tarefa.Id })" 
                                               style="display:inline;"
                                               onsubmit="return confirm('Tem certeza que deseja deletar esta tarefa?');">
+                                            @Html.AntiForgeryToken()
                                             <button type="submit" class="btn btn-sm btn-danger">
                                                 🗑️ Deletar
                                             </button>
                                         </form>
                                     </div>
-                                    <form method="post" 
-                                          action="@Url.Action("AdicionarLembrete", new { tarefaId = tarefa.Id })" 
-                                          class="mt-2">
-                                        <div class="input-group input-group-sm">
-                                            <input type="text" 
-                                                   name="texto" 
-                                                   class="form-control" 
-                                                   placeholder="Novo lembrete" 
-                                                   maxlength="200"
-                                                   required />
-                                            <button class="btn btn-outline-primary" type="submit" title="Adicionar lembrete">
-                                                ➕ Lembrete
-                                            </button>
-                                        </div>
-                                    </form>
                                 </div>
                             </div>
                         </div>
@@ -140,6 +104,7 @@
                               method="post" 
                               action="@Url.Action("ToggleComplete", new { id = tarefa.Id })" 
                               style="display:none;">
+                            @Html.AntiForgeryToken()
                         </form>
                     }
                 </div>

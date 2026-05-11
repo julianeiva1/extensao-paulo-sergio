@@ -61,8 +61,7 @@ namespace TodoListMvc.Services
                 LembreteEm = lembreteEm,
                 Concluida = false,
                 DataCriacao = DateTime.UtcNow,
-                DataModificacao = DateTime.UtcNow,
-                Lembretes = new()
+                DataModificacao = DateTime.UtcNow
             };
 
             lock (_lock)
@@ -133,89 +132,6 @@ namespace TodoListMvc.Services
                     return false;
 
                 _tarefas.Remove(tarefa);
-                return true;
-            }
-        }
-
-        /// <summary>
-        /// Adiciona um lembrete a uma tarefa.
-        /// </summary>
-        /// <param name="tarefaId">ID da tarefa</param>
-        /// <param name="texto">Texto do lembrete</param>
-        /// <returns>Lembrete criado</returns>
-        /// <exception cref="ArgumentException">Se tarefa não encontrada ou texto inválido</exception>
-        public Lembrete AdicionarLembrete(Guid tarefaId, string texto)
-        {
-            if (string.IsNullOrWhiteSpace(texto))
-                throw new ArgumentException("O texto do lembrete não pode ser vazio");
-
-            lock (_lock)
-            {
-                var tarefa = _tarefas.FirstOrDefault(t => t.Id == tarefaId);
-                if (tarefa == null)
-                    throw new ArgumentException("Tarefa não encontrada");
-
-                var lembrete = new Lembrete
-                {
-                    Id = Guid.NewGuid(),
-                    Texto = texto.Trim(),
-                    DataCriacao = DateTime.UtcNow
-                };
-
-                tarefa.Lembretes.Add(lembrete);
-                tarefa.DataModificacao = DateTime.UtcNow;
-                return lembrete;
-            }
-        }
-
-        /// <summary>
-        /// Remove um lembrete de uma tarefa.
-        /// </summary>
-        /// <param name="tarefaId">ID da tarefa</param>
-        /// <param name="lembreteId">ID do lembrete</param>
-        /// <returns>true se removido, false se não encontrado</returns>
-        public bool RemoverLembrete(Guid tarefaId, Guid lembreteId)
-        {
-            lock (_lock)
-            {
-                var tarefa = _tarefas.FirstOrDefault(t => t.Id == tarefaId);
-                if (tarefa == null)
-                    return false;
-
-                var lembrete = tarefa.Lembretes.FirstOrDefault(l => l.Id == lembreteId);
-                if (lembrete == null)
-                    return false;
-
-                tarefa.Lembretes.Remove(lembrete);
-                tarefa.DataModificacao = DateTime.UtcNow;
-                return true;
-            }
-        }
-
-        /// <summary>
-        /// Atualiza o texto de um lembrete existente.
-        /// </summary>
-        /// <param name="tarefaId">ID da tarefa</param>
-        /// <param name="lembreteId">ID do lembrete</param>
-        /// <param name="novoTexto">Novo texto</param>
-        /// <returns>true se atualizado, false se não encontrado</returns>
-        public bool AtualizarLembrete(Guid tarefaId, Guid lembreteId, string novoTexto)
-        {
-            if (string.IsNullOrWhiteSpace(novoTexto))
-                return false;
-
-            lock (_lock)
-            {
-                var tarefa = _tarefas.FirstOrDefault(t => t.Id == tarefaId);
-                if (tarefa == null)
-                    return false;
-
-                var lembrete = tarefa.Lembretes.FirstOrDefault(l => l.Id == lembreteId);
-                if (lembrete == null)
-                    return false;
-
-                lembrete.Texto = novoTexto.Trim();
-                tarefa.DataModificacao = DateTime.UtcNow;
                 return true;
             }
         }

@@ -50,10 +50,5 @@ namespace TodoListMvc.Models
         /// Data e hora da última modificação (UTC).
         /// </summary>
         public DateTime DataModificacao { get; set; } = DateTime.UtcNow;
-
-        /// <summary>
-        /// Lista de lembretes associados a esta tarefa.
-        /// </summary>
-        public List<Lembrete> Lembretes { get; set; } = new();
     }
 }
