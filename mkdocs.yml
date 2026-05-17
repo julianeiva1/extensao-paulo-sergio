@@ -39,12 +39,20 @@ plugins:
 
 nav:
   - Início: index.md
-  - Atividade SDD (Aula 09): aula-09-sdd.md
-  - Especificação: spec.md
-  - Plano: plan.md
-  - Tasks: tasks.md
   - Constitution: constitution.md
-  - Deploy: deploy.md
+  - Boas Práticas e Justificativas: boas-praticas.md
+  - Decisões Arquiteturais:
+      - MVC Mono-Repo com Armazenamento em Memória: decisoes-arquiteturais/mvc-monorepo-in-memory.md
+  - Qualidade:
+      - Checklist de Pull Request: qualidade/checklist-pr.md
+      - Checklist de Testes: qualidade/checklist-testes.md
+      - Critérios de Entrega: qualidade/criterios-de-entrega.md
+  - Projeto:
+      - Atividade SDD (Aula 09): aula-09-sdd.md
+      - Especificação: spec.md
+      - Plano: plan.md
+      - Tasks: tasks.md
+      - Deploy: deploy.md
 
 extra:
   social:
